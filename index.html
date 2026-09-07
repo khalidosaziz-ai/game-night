@@ -1025,8 +1025,20 @@
     try { if (navigator.vibrate) navigator.vibrate(pattern); } catch (e) {}
   }
 
-    /* ---------- installable app (Add to Home Screen / PWA) ---------- */
-  /* في النسخة المستضافة، الـ manifest والأيقونات موجودة كملفات حقيقية داخل head */
+    /* مستطيل بزوايا مدوّرة على canvas — تستخدمه لعبة السباق وأيقونة التطبيق معًا،
+     فلا تنقله داخل قسم التثبيت: نسخة الاستضافة تحذف ذلك القسم. */
+  function roundRectPath(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  /* ---------- installable app (Add to Home Screen / PWA) ---------- */
+  /* في النسخة المستضافة، الـ manifest والأيقونات ملفات حقيقية داخل head */
   var deferredInstallPrompt = null;
   function setupPWA() {
     if ("serviceWorker" in navigator) {
