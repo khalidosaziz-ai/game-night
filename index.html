@@ -3,24 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ليلة الألعاب</title>
-<meta name="description" content="منصة ألعاب عائلية بالعربي - تريفيا، سباق سيارات، سلم وثعبان، شطرنج، إكس أو، سيكونس">
+<title>ملك الألعاب</title>
+<meta name="description" content="ملك الألعاب - عشر ألعاب عربية: تريفيا، سباق سيارات، سلم وثعبان، باصرة، شطرنج، إكس أو وأكثر">
 <meta name="theme-color" content="#a8452c">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ليلة الألعاب">
-<meta property="og:title" content="ليلة الألعاب">
-<meta property="og:description" content="٩ ألعاب عربية - العبوا سوا من أي جوال">
+<meta name="apple-mobile-web-app-title" content="ملك الألعاب">
+<meta property="og:title" content="ملك الألعاب">
+<meta property="og:description" content="عشر ألعاب عربية - العبوا سوا من أي جوال">
 <meta property="og:type" content="website">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap">
 <style>
 
   /* ============================================================
-     ليلة الألعاب — نظام تصميم بروح Apple، مصمَّم للجوال أولًا
+     ملك الألعاب — نظام تصميم بروح Apple، مصمَّم للجوال أولًا
      ============================================================ */
   :root {
     color-scheme: dark;
@@ -600,6 +600,166 @@
   .race-btn[data-kind="gas"][data-on="1"] { background: var(--green); color: #05130a; border-color: transparent; }
   .race-btn[data-kind="brake"][data-on="1"] { background: var(--red); color: #fff; border-color: transparent; }
   .race-btn[data-kind="steer"][data-on="1"] { background: var(--blue); color: #fff; border-color: transparent; }
+
+  /* --- أوراق اللعب (باصرة) --- */
+  .pcard-row { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; }
+  .pcard {
+    width: 52px; height: 74px; border-radius: 9px; flex-shrink: 0;
+    background: linear-gradient(160deg, #fffdf8, #ece5d8);
+    border: 1px solid rgba(0,0,0,.28); color: #1a1a20;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+    box-shadow: 0 5px 12px rgba(0,0,0,.45);
+    cursor: pointer; user-select: none;
+    transition: transform .22s var(--spring), box-shadow .2s ease;
+    animation: tileIn .3s var(--spring) both;
+  }
+  .pcard:active { transform: scale(.92); }
+  .pcard:hover { transform: translateY(-4px); box-shadow: 0 10px 22px rgba(0,0,0,.55); }
+  .pcard-red { color: #d62828; }
+  .pc-r { font-size: 21px; font-weight: 800; line-height: 1; }
+  .pc-s { font-size: 17px; line-height: 1; }
+  .pcard-sm { width: 38px; height: 54px; }
+  .pcard-sm .pc-r { font-size: 15px; }
+  .pcard-sm .pc-s { font-size: 12px; }
+  .pcard-back { background: linear-gradient(150deg,#3a3a52,#1e1e2e); color:#8f8fb0; }
+
+  /* --- صفوف جهات الاتصال --- */
+  .contact-row {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface-2); border: 1px solid var(--hairline);
+    border-radius: 16px; padding: 10px 12px;
+    animation: rowIn .34s var(--spring) both;
+  }
+  .wa-btn {
+    all: unset; cursor: pointer; flex-shrink: 0;
+    background: #25d366; color: #06301a; font-weight: 800; font-size: 13px;
+    padding: 8px 14px; border-radius: 999px;
+    transition: transform .22s var(--spring), filter .2s ease;
+  }
+  .wa-btn:active { transform: scale(.92); }
+
+
+  /* ============ المظهر البلوري ثلاثي الأبعاد ============ */
+  .crown-mark {
+    position: relative; width: 40px; height: 40px; border-radius: 13px; flex-shrink: 0;
+    background: linear-gradient(150deg, #ffe28a 0%, #ffb340 34%, #ff7a3d 62%, #c9426b 100%);
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+    box-shadow:
+      inset 0 1.5px 0 rgba(255,255,255,.85),
+      inset 0 -3px 7px rgba(120,20,60,.5),
+      0 8px 18px rgba(255,140,60,.42),
+      0 2px 4px rgba(0,0,0,.5);
+    transform: perspective(220px) rotateX(9deg);
+    text-shadow: 0 2px 3px rgba(120,30,10,.5);
+  }
+  .crown-mark::after {
+    content: ""; position: absolute; inset: 2px 2px 46% 2px; border-radius: 11px 11px 40% 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,0));
+    pointer-events: none;
+  }
+
+  /* العنوان البلوري: حواف مشطوفة + انعكاس ضوئي */
+  .crystal-title {
+    font-size: 40px; font-weight: 900; letter-spacing: -.035em; line-height: 1.12;
+    background: linear-gradient(175deg, #ffffff 0%, #ffe9b8 26%, #ffb547 52%, #ff6f5e 78%, #d8447f 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 1px 0 rgba(255,255,255,.5)) drop-shadow(0 5px 14px rgba(255,140,60,.42)) drop-shadow(0 12px 26px rgba(0,0,0,.55));
+    padding-bottom: 3px;
+  }
+  .crystal-sub { color: var(--text-2); font-size: 14.5px; margin-top: 3px; }
+
+  /* بلاطات بلورية: عمق حقيقي + بريق زجاجي */
+  .tile {
+    border: 1px solid rgba(255,255,255,.22);
+    box-shadow:
+      inset 0 1.5px 0 rgba(255,255,255,.6),
+      inset 0 -14px 26px rgba(0,0,0,.34),
+      inset 0 0 0 1px rgba(255,255,255,.07),
+      0 12px 26px rgba(0,0,0,.5),
+      0 2px 5px rgba(0,0,0,.4);
+    transform: perspective(600px) rotateX(2.2deg);
+  }
+  .tile::before {
+    content: ""; position: absolute; left: -30%; top: -60%; width: 90%; height: 150%;
+    background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.34) 46%, rgba(255,255,255,0) 62%);
+    transform: rotate(14deg); pointer-events: none; z-index: 1;
+  }
+  .tile::after {
+    background:
+      radial-gradient(120% 68% at 26% -14%, rgba(255,255,255,.5), rgba(255,255,255,0) 56%),
+      linear-gradient(178deg, rgba(255,255,255,.10), rgba(0,0,0,.38));
+  }
+  .tile:active { transform: perspective(600px) rotateX(2.2deg) scale(.93); }
+  .tile-emoji { filter: drop-shadow(0 3px 5px rgba(0,0,0,.5)) drop-shadow(0 0 12px rgba(255,255,255,.28)); }
+
+  /* أزرار بعمق زجاجي */
+  .btn-primary {
+    background: linear-gradient(170deg, #ffc061 0%, var(--accent) 38%, #ff5f52 74%, var(--accent-2) 100%);
+    box-shadow:
+      inset 0 1.5px 0 rgba(255,255,255,.6),
+      inset 0 -4px 10px rgba(150,30,40,.4),
+      0 10px 24px rgba(255,92,60,.36),
+      0 2px 4px rgba(0,0,0,.4);
+  }
+  .btn-ghost, .share-btn, .race-btn, .num-btn, .choice-chip {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 4px 12px rgba(0,0,0,.32);
+  }
+  .choice-chip[data-on="1"], .num-btn[data-on="1"] {
+    background: linear-gradient(170deg, #ffc061, var(--accent) 40%, var(--accent-2));
+    box-shadow: inset 0 1.5px 0 rgba(255,255,255,.55), 0 7px 16px rgba(255,92,60,.34);
+  }
+  .card {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.09), 0 10px 26px rgba(0,0,0,.34);
+  }
+  .hero-mark {
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.6), inset 0 -5px 12px rgba(0,0,0,.3), 0 14px 32px rgba(255,105,60,.36);
+    transform: perspective(320px) rotateX(8deg);
+  }
+  .avatar { box-shadow: inset 0 1.5px 0 rgba(255,255,255,.45), 0 3px 8px rgba(0,0,0,.4); }
+  .winner-name {
+    background: linear-gradient(175deg, #ffffff, #ffe9b8 28%, #ffb547 55%, #ff6f5e 80%, #d8447f);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 4px 12px rgba(255,140,60,.45)) drop-shadow(0 10px 22px rgba(0,0,0,.5));
+  }
+  .pcard {
+    box-shadow: inset 0 1.5px 0 rgba(255,255,255,.9), inset 0 -5px 10px rgba(120,100,70,.22), 0 6px 14px rgba(0,0,0,.5);
+  }
+  .dice-3d { transform: perspective(300px) rotateX(11deg); }
+
+
+  /* --- طاولة الطرنيب --- */
+  .trn-table { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .trn-slot {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    background: rgba(0,0,0,.28); border: 1px solid var(--hairline);
+    border-radius: 16px; padding: 10px 6px; min-height: 96px; justify-content: center;
+  }
+  .trn-slot[data-turn="1"] { box-shadow: 0 0 0 2px var(--accent); background: rgba(255,159,10,.1); }
+  .trn-us .trn-name { color: var(--green); }
+  .trn-them .trn-name { color: var(--text-2); }
+  .trn-name { font-size: 11.5px; font-weight: 800; }
+  .trn-empty { width: 38px; height: 54px; border-radius: 9px; border: 1.5px dashed var(--hairline);
+    display: flex; align-items: center; justify-content: center; color: var(--text-3); font-size: 18px; }
+
+  /* --- حيوان جماد بلاد --- */
+  .hgb-letter {
+    font-size: 86px; font-weight: 900; line-height: 1; margin: 6px 0;
+    background: linear-gradient(175deg,#fff,#ffe9b8 30%,#ffb547 58%,#ff6f5e 85%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 6px 18px rgba(255,140,60,.5));
+  }
+  .hgb-bar { display: flex; align-items: center; gap: 12px; background: var(--surface);
+    border: 1px solid var(--hairline); border-radius: var(--radius-md); padding: 11px 14px; }
+  .hgb-letter-sm { font-size: 30px; font-weight: 900; color: var(--accent); line-height: 1; }
+  .hgb-clock { font-size: 27px; font-weight: 900; color: var(--accent); min-width: 46px; text-align: center; }
+  .hgb-row { display: flex; align-items: center; gap: 9px; }
+  .hgb-cat { width: 82px; flex-shrink: 0; font-size: 13.5px; font-weight: 700; color: var(--text-2); }
+  .hgb-ans { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 12px;
+    background: rgba(0,0,0,.26); margin-bottom: 7px; cursor: pointer;
+    border: 1px solid transparent; transition: background .2s ease, border-color .2s ease; }
+  .hgb-ans[data-ok="1"] { background: rgba(48,209,88,.12); border-color: rgba(48,209,88,.34); }
+  .hgb-ans[data-ok="0"] { background: rgba(255,69,58,.1); border-color: rgba(255,69,58,.26); }
+
   .race-keyhint { text-align: center; font-size: 11.5px; color: var(--text-3); margin-top: 9px; font-weight: 600; }
 
 
@@ -798,7 +958,7 @@
     return { id: "b" + i, category: q.c, difficulty: q.d, text: q.t, options: q.o, correctIndex: q.a };
   });
 
-  var GAME_TYPE_ORDER = ["trivia", "wyr", "emoji", "math", "racing", "snakes", "sequence", "chess", "xo"];
+  var GAME_TYPE_ORDER = ["trivia", "wyr", "emoji", "math", "racing", "hgb", "snakes", "basra", "tarneeb", "sequence", "chess", "xo"];
   var GAME_TYPES = {
     trivia: { label: "تريفيا معلومات", short: "تريفيا", sub: "أسئلة معلومات عامة بتصنيفات متعددة" },
     wyr: { label: "لو خيّروك", short: "لو خيّروك", sub: "اختر بين خيارين، واكتشف ماذا يختار معظم اللاعبين" },
@@ -808,10 +968,13 @@
     snakes: { label: "سلم وثعبان", short: "سلم وثعبان", sub: "اللعبة الكلاسيكية على لوح واحد، بالتناوب" },
     sequence: { label: "سيكونس", short: "سيكونس", sub: "كوّنوا خطًا من 5 قطع لتفوزوا — بالتناوب على جهاز واحد" },
     chess: { label: "شطرنج", short: "شطرنج", sub: "شطرنج كامل بقوانين حقيقية، بين لاعبين اثنين" },
-    xo: { label: "إكس أو", short: "إكس أو", sub: "لاعبان على جهاز واحد، أو تحدَّ الكمبيوتر بثلاثة مستويات" }
+    xo: { label: "إكس أو", short: "إكس أو", sub: "لاعبان على جهاز واحد، أو تحدَّ الكمبيوتر بثلاثة مستويات" },
+    basra: { label: "باصرة", short: "باصرة", sub: "لعبة الورق الشعبية — اكنس الطاولة واجمع النقاط" },
+    tarneeb: { label: "طرنيب", short: "طرنيب", sub: "أنت وشريكك ضد خصمين — مزايدة وطرنيب وأكلات" },
+    hgb: { label: "حيوان جماد بلاد", short: "حيوان جماد", sub: "حرف واحد وستة تصنيفات — من يعبّي أسرع وأصح يفوز" }
   };
-  var BOARD_LOCAL_ONLY = ["snakes", "sequence", "chess", "xo"];
-  var BOARD_TYPES = ["snakes", "sequence", "chess", "racing", "xo"];
+  var BOARD_LOCAL_ONLY = ["snakes", "sequence", "chess", "xo", "basra", "tarneeb", "hgb"];
+  var BOARD_TYPES = ["snakes", "sequence", "chess", "racing", "xo", "basra", "tarneeb", "hgb"];
 
   var WYR_BANK = [
     "تسافر حول العالم بلا فلوس زايدة عن حاجتك|تقعد ببيتك وتصير مليونيرًا",
@@ -974,7 +1137,7 @@
         pool: S.pool, idx: S.idx, scores: S.scores, streaks: S.streaks, bestStreak: S.bestStreak,
         powerups: S.powerups, answerLog: S.answerLog,
         playMode: S.playMode, gameCode: S.gameCode, compareEntries: S.compareEntries, gameType: S.gameType,
-        snakes: S.snakes, sequence: S.sequence, chess: S.chess, racing: S.racing, xo: S.xo
+        snakes: S.snakes, sequence: S.sequence, chess: S.chess, racing: S.racing, xo: S.xo, basra: S.basra, tarneeb: S.tarneeb, hgb: S.hgb
       };
       localStorage.setItem(GAME_STATE_KEY, JSON.stringify(snap));
     } catch (e) {}
@@ -994,6 +1157,7 @@
     screen: "home",
     showShare: false,
     updateChecking: false, updateFound: false, updateMsg: "", settingsMsg: "", confirmReset: false,
+    basra: null, tarneeb: null, hgb: null, contacts: [], contactGroup: "family", contactWarn: "", inviteCopied: false,
     mode: "players",
     players: [],
     cats: { general: true, history: true, geography: true, science: true, sports: true, entertainment: true, tech: true, cyber: true, space: true, horror: true, civilizations: true, custom: false },
@@ -1293,6 +1457,9 @@
     if (S.gameType === "chess" && S.players.length !== 2) { flashWarn("الشطرنج يحتاج لاعبين اثنين بالضبط"); return; }
     if (S.gameType === "xo" && S.players.length > 2) { flashWarn("إكس أو للاعبين اثنين — أو لاعب واحد ضد الكمبيوتر"); return; }
     if (S.gameType === "sequence" && (S.players.length < 2 || S.players.length > 4)) { flashWarn("سيكونس يحتاج من لاعبين إلى 4 لاعبين"); return; }
+    if (S.gameType === "basra" && (S.players.length < 2 || S.players.length > 4)) { flashWarn("باصرة تحتاج من لاعبين إلى 4 لاعبين"); return; }
+    if (S.gameType === "hgb" && S.players.length < 2) { flashWarn("حيوان جماد بلاد تحتاج لاعبين على الأقل"); return; }
+    if (S.gameType === "tarneeb" && S.players.length > 1) S.players = [S.players[0]];  /* طرنيب: لاعب واحد + 3 من الكمبيوتر */
     if (S.gameType === "trivia") {
       var anyCat = Object.keys(S.cats).some(function (k) { return S.cats[k]; });
       if (!anyCat) { flashWarn("اختر تصنيفًا واحدًا على الأقل"); return; }
@@ -1323,6 +1490,9 @@
     if (S.gameType === "chess") return startChessGame();
     if (S.gameType === "racing") return startRacingGame(Math.random);
     if (S.gameType === "xo") return startXoGame();
+    if (S.gameType === "basra") return startBasraGame();
+    if (S.gameType === "tarneeb") return startTarneebGame();
+    if (S.gameType === "hgb") return startHgbGame();
   }
 
   /* ---------- shared board-game win handler (feeds hall of fame + lifetime points) ---------- */
@@ -1446,7 +1616,7 @@
   }
   function snakesAnimStep() {
     var st = S.snakes;
-    if (!st || !st.anim) return;
+    if (!st || !st.anim || S.screen !== "board") return;
     var a = st.anim;
     st.positions[a.pid] = a.path[a.i];
     a.i += 1;
@@ -1460,14 +1630,21 @@
       st.log.unshift(a.name + (isLadder ? " صعد سلّمًا من " + landed + " إلى " + dest + " 🪜" : " ابتلعه ثعبان من " + landed + " إلى " + dest + " 🐍"));
       render();
       setTimeout(function () {
+        if (!S.snakes || S.snakes !== st) return;
         st.positions[a.pid] = dest;
         playSound(isLadder ? "correct" : "wrong");
         render();
-        setTimeout(function () { snakesFinishTurn(a.pid, dest, a.val); }, 480);
+        setTimeout(function () {
+          if (!S.snakes || S.snakes !== st) return;
+          snakesFinishTurn(a.pid, dest, a.val);
+        }, 480);
       }, 430);
       return;
     }
-    setTimeout(function () { snakesFinishTurn(a.pid, landed, a.val); }, 220);
+    setTimeout(function () {
+      if (!S.snakes || S.snakes !== st) return;
+      snakesFinishTurn(a.pid, landed, a.val);
+    }, 220);
   }
   function rollSnakesDice() {
     var st = S.snakes;
@@ -1477,6 +1654,7 @@
     var spins = 0;
     render();
     var spinTimer = setInterval(function () {
+      if (!S.snakes || S.snakes !== st) { clearInterval(spinTimer); return; }
       st.diceFace = 1 + Math.floor(Math.random() * 6);
       spins += 1;
       render();
@@ -1626,20 +1804,29 @@
       var human = S.players[0];
       var hasAi = S.players.some(function (p) { return p.id === "__ai__"; });
       if (!hasAi) S.players.push({ id: "__ai__", name: "الكمبيوتر 🤖", color: PLAYER_COLORS[3] });
+      var stRef = st;
       setTimeout(function () {
+        if (!S.xo || S.xo !== stRef) return;
         if (!winnerMark) finalizeBoardGame([human.id, "__ai__"], true);
         else if (winnerMark === "X") finalizeBoardGame([human.id, "__ai__"], false);
         else finalizeBoardGame(["__ai__", human.id], false);
       }, 950);
       return;
     }
+    var stRef2 = st;
     if (!winnerMark) {
-      setTimeout(function () { finalizeBoardGame(S.players.map(function (p) { return p.id; }), true); }, 950);
+      setTimeout(function () {
+        if (!S.xo || S.xo !== stRef2) return;
+        finalizeBoardGame(S.players.map(function (p) { return p.id; }), true);
+      }, 950);
       return;
     }
     var winnerPid = xoPlayerFor(winnerMark).id;
     var loserPid = S.players.map(function (p) { return p.id; }).filter(function (x) { return x !== winnerPid; })[0];
-    setTimeout(function () { finalizeBoardGame([winnerPid, loserPid], false); }, 950);
+    setTimeout(function () {
+      if (!S.xo || S.xo !== stRef2) return;
+      finalizeBoardGame([winnerPid, loserPid], false);
+    }, 950);
   }
   function xoPlace(i, mark) {
     var st = S.xo;
@@ -1796,6 +1983,7 @@
     S.screen = "board";
     saveGameState();
     render();
+    seqEnsurePlayable();
   }
   function sequenceCurrentPlayer() { return S.players[S.sequence.turnIdx % S.players.length]; }
   function selectSequenceCard(card) {
@@ -1841,7 +2029,101 @@
     st.turnIdx += 1;
     saveGameState();
     render();
+    seqEnsurePlayable();
   }
+  /* --- الأوراق الميتة وتخطّي الدور: علاج علّة توقّف اللعبة --- */
+  function seqCardIsDead(st, card) {
+    if (SEQ_TWO_EYED_JACKS.indexOf(card) !== -1 || SEQ_ONE_EYED_JACKS.indexOf(card) !== -1) return false;
+    for (var i = 0; i < 100; i++) {
+      if (st.board[i] === card && !st.chips[i]) return false;
+    }
+    return true;
+  }
+  function seqCardPlayable(st, card, pid) {
+    if (SEQ_TWO_EYED_JACKS.indexOf(card) !== -1) {
+      for (var i = 0; i < 100; i++) if (!seqIsCorner(i) && !st.chips[i]) return true;
+      return false;
+    }
+    if (SEQ_ONE_EYED_JACKS.indexOf(card) !== -1) {
+      for (var j = 0; j < 100; j++) if (st.chips[j] && st.chips[j] !== pid && !st.lockedCells[j]) return true;
+      return false;
+    }
+    return !seqCardIsDead(st, card);
+  }
+  function seqPlayerHasMove(st, pid) {
+    var hand = st.hands[pid] || [];
+    for (var i = 0; i < hand.length; i++) if (seqCardPlayable(st, hand[i], pid)) return true;
+    return false;
+  }
+  function seqSwapDeadCard(card) {
+    var st = S.sequence;
+    if (!st || S.screen !== "board" || S.gameType !== "sequence") return;
+    var pid = sequenceCurrentPlayer().id;
+    var hand = st.hands[pid] || [];
+    var ci = hand.indexOf(card);
+    if (ci === -1) return;
+    if (!seqCardIsDead(st, card)) { flashWarn("هذه الورقة ما زالت صالحة للّعب"); return; }
+    hand.splice(ci, 1);
+    if (st.deck.length) hand.push(st.deck.pop());
+    if (st.selectedCard === card) st.selectedCard = null;
+    flashWarn("بدّلنا الورقة الميتة " + card);
+    saveGameState();
+    render();
+    seqEnsurePlayable();
+  }
+  /* إذا ما عاد عند اللاعب الحالي أي نقلة: نتخطّى دوره تلقائيًا، وإذا الكل عالق ننهي الجولة بالنقاط */
+  function seqEnsurePlayable() {
+    var st = S.sequence;
+    if (!st || S.screen !== "board" || S.gameType !== "sequence") return;
+    var guard = 0;
+    var changed = false;
+    while (guard++ < S.players.length + 1) {
+      var pid = sequenceCurrentPlayer().id;
+      /* بدّل تلقائيًا أي ورقة ميتة ما دام في أوراق بالكونة */
+      var swapped = true;
+      var swapGuard = 0;
+      while (swapped && st.deck.length && swapGuard++ < 60) {
+        swapped = false;
+        var h = st.hands[pid] || [];
+        for (var i = 0; i < h.length; i++) {
+          if (seqCardIsDead(st, h[i])) {
+            h.splice(i, 1);
+            if (st.deck.length) h.push(st.deck.pop());
+            swapped = true;
+            changed = true;
+            break;
+          }
+        }
+      }
+      if (seqPlayerHasMove(st, pid)) {
+        /* لازم نعيد الرسم لو بدّلنا أوراقًا، وإلا تبقى اليد المعروضة قديمة */
+        if (changed) { st.selectedCard = null; saveGameState(); render(); }
+        return;
+      }
+      /* لا نقلة: هل في لاعب ثاني يقدر يلعب؟ */
+      var anyone = false;
+      for (var k = 0; k < S.players.length; k++) {
+        if (seqPlayerHasMove(st, S.players[k].id)) { anyone = true; break; }
+      }
+      if (!anyone) { seqFinishByPoints(); return; }
+      st.turnIdx += 1;
+      st.selectedCard = null;
+      flashWarn("ما في نقلة ممكنة — انتقل الدور");
+      saveGameState();
+      render();
+    }
+  }
+  function seqFinishByPoints() {
+    var st = S.sequence;
+    if (!st) return;
+    var counts = {};
+    S.players.forEach(function (p) { counts[p.id] = 0; });
+    for (var i = 0; i < 100; i++) if (st.chips[i] && counts[st.chips[i]] !== undefined) counts[st.chips[i]] += 1;
+    var order = S.players.map(function (p) { return p.id; }).sort(function (a, b) { return counts[b] - counts[a]; });
+    flashWarn("خلصت الأوراق — الفوز بعدد القطع");
+    finalizeBoardGame(order, false);
+  }
+
   function renderSequence() {
     var st = S.sequence;
     var cur = sequenceCurrentPlayer();
@@ -1864,7 +2146,9 @@
       var suitColor = (card.indexOf("♥") !== -1 || card.indexOf("♦") !== -1) ? "seq-red" : "";
       var isTwoEyed = SEQ_TWO_EYED_JACKS.indexOf(card) !== -1;
       var isOneEyed = SEQ_ONE_EYED_JACKS.indexOf(card) !== -1;
+      var dead = seqCardIsDead(st, card);
       var label = isTwoEyed ? card + " (حرة)" : (isOneEyed ? card + " (إزالة)" : card);
+      if (dead) return '<button class="choice-chip ' + suitColor + '" style="opacity:.62" onclick="Game.seqSwapDeadCard(\'' + card + '\')">' + esc(card) + " ⟳ ميتة</button>";
       return '<button class="choice-chip ' + suitColor + '" data-on="' + (st.selectedCard === card ? 1 : 0) + '" onclick="Game.selectSequenceCard(\'' + card + '\')">' + esc(label) + "</button>";
     }).join("") + "</div>";
     html += '<div class="footnote">اختر ورقة من يدك ثم اضغط على الخانة المطابقة على اللوح. الشبّة ذات العينين تُلعب في أي خانة فارغة، وذات العين الواحدة تُزيل قطعة خصم. كوّن خطًا من 5 لتفوز.</div>';
@@ -2564,12 +2848,992 @@
     html += '<button class="btn btn-ghost btn-block" style="margin-top:10px" onclick="Game.newGame()">إنهاء والعودة للإعدادات</button>';
     return html;
   }
+  /* ---------- باصرة (Basra) — لعبة الورق الشعبية ---------- */
+  var BASRA_SUITS = [
+    { s: "spades", sym: "♠", ar: "بستوني", red: false },
+    { s: "hearts", sym: "♥", ar: "قلوب", red: true },
+    { s: "diamonds", sym: "♦", ar: "ديناري", red: true },
+    { s: "clubs", sym: "♣", ar: "سباتي", red: false }
+  ];
+  var BASRA_RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+  var BASRA_TARGET_HAND = 4;
+
+  function basraCardId(c) { return c.r + "-" + c.s; }
+  function basraValue(c) {
+    /* القيمة العددية للجمع: الآص = 1، والأرقام بقيمتها، والصور لا تُجمع */
+    var i = BASRA_RANKS.indexOf(c.r);
+    return i <= 9 ? i + 1 : null;
+  }
+  function basraIsJack(c) { return c.r === "J"; }
+  function basraSuitInfo(c) {
+    for (var i = 0; i < BASRA_SUITS.length; i++) if (BASRA_SUITS[i].s === c.s) return BASRA_SUITS[i];
+    return BASRA_SUITS[0];
+  }
+  function basraDeck() {
+    var d = [];
+    BASRA_SUITS.forEach(function (su) {
+      BASRA_RANKS.forEach(function (r) { d.push({ r: r, s: su.s }); });
+    });
+    return d;
+  }
+  /* نقاط الأوراق الخاصة في نهاية الجولة */
+  function basraCardPoints(c) {
+    if (c.r === "A") return 1;
+    if (c.r === "J") return 1;
+    if (c.r === "2" && c.s === "clubs") return 2;      /* اثنين السباتي */
+    if (c.r === "10" && c.s === "diamonds") return 3;  /* عشرة الديناري */
+    return 0;
+  }
+
+  /* أفضل التقاط ممكن: يفضّل ما يُفرِغ الطاولة (باصرة)، ثم الأكثر أوراقًا */
+  function basraFindCapture(card, table) {
+    if (!table.length) return null;
+    if (basraIsJack(card)) {
+      return { idx: table.map(function (_, i) { return i; }), kind: "jack" };
+    }
+    var sameRank = [];
+    for (var i = 0; i < table.length; i++) if (table[i].r === card.r) sameRank.push(i);
+    if (sameRank.length) return { idx: sameRank, kind: "rank" };
+
+    var val = basraValue(card);
+    if (val === null) return null;
+    var nums = [];
+    for (var j = 0; j < table.length; j++) {
+      var v = basraValue(table[j]);
+      if (v !== null) nums.push({ i: j, v: v });
+    }
+    var best = null;
+    var found = [];
+    (function search(start, sum, picked) {
+      if (sum === val && picked.length) { found.push(picked.slice()); return; }
+      if (sum >= val) return;
+      for (var k = start; k < nums.length; k++) {
+        picked.push(nums[k].i);
+        search(k + 1, sum + nums[k].v, picked);
+        picked.pop();
+      }
+    })(0, 0, []);
+    for (var f = 0; f < found.length; f++) {
+      var cand = found[f];
+      var empties = cand.length === table.length;
+      if (!best) { best = { idx: cand, empties: empties }; continue; }
+      if (empties && !best.empties) { best = { idx: cand, empties: empties }; continue; }
+      if (empties === best.empties && cand.length > best.idx.length) best = { idx: cand, empties: empties };
+    }
+    return best ? { idx: best.idx, kind: "sum" } : null;
+  }
+
+  function startBasraGame() {
+    var deck = shuffleWithRng(basraDeck(), Math.random);
+    /* قاعدة البداية: لا توضع ولد على الطاولة في التوزيع الأول */
+    var table = [], guard = 0;
+    while (table.length < 4 && guard++ < 200) {
+      var c = deck.pop();
+      if (basraIsJack(c)) { deck.unshift(c); continue; }
+      table.push(c);
+    }
+    S.basra = {
+      deck: deck, table: table, hands: {}, piles: {}, basras: {},
+      turnIdx: 0, lastCapturer: null, log: [], lastMove: null, busy: false
+    };
+    S.players.forEach(function (p) { S.basra.hands[p.id] = []; S.basra.piles[p.id] = []; S.basra.basras[p.id] = 0; });
+    basraDealHands();
+    S.screen = "board";
+    saveGameState();
+    render();
+  }
+  function basraDealHands() {
+    var st = S.basra;
+    for (var n = 0; n < BASRA_TARGET_HAND; n++) {
+      for (var p = 0; p < S.players.length; p++) {
+        if (!st.deck.length) return;
+        st.hands[S.players[p].id].push(st.deck.pop());
+      }
+    }
+  }
+  function basraCurrentPlayer() { return S.players[S.basra.turnIdx % S.players.length]; }
+  function basraHandsEmpty() {
+    var st = S.basra;
+    return S.players.every(function (p) { return st.hands[p.id].length === 0; });
+  }
+
+  function playBasraCard(handIdx) {
+    var st = S.basra;
+    if (!st || st.busy) return;
+    var me = basraCurrentPlayer();
+    var hand = st.hands[me.id];
+    if (handIdx < 0 || handIdx >= hand.length) return;
+    var card = hand[handIdx];
+    var cap = basraFindCapture(card, st.table);
+
+    st.busy = true;
+    if (cap) {
+      var taken = cap.idx.slice().sort(function (a, b) { return b - a; }).map(function (i) { return st.table[i]; });
+      cap.idx.slice().sort(function (a, b) { return b - a; }).forEach(function (i) { st.table.splice(i, 1); });
+      st.piles[me.id] = st.piles[me.id].concat(taken, [card]);
+      st.lastCapturer = me.id;
+      var isBasra = st.table.length === 0 && (cap.kind !== "jack" || taken.length === 1);
+      if (isBasra) {
+        st.basras[me.id] += 1;
+        st.log.unshift("🔥 باصرة! " + me.name + " كنس الطاولة (+10)");
+        playSound("win");
+        vibrate([30, 40, 30]);
+      } else {
+        st.log.unshift(me.name + " أخذ " + taken.length + (taken.length === 2 ? " ورقتين" : " أوراق") +
+          (cap.kind === "jack" ? " بالولد 🃏" : (cap.kind === "sum" ? " بالجمع" : "")));
+        playSound("correct");
+        vibrate(18);
+      }
+      st.lastMove = { card: card, taken: taken, basra: isBasra };
+    } else {
+      st.table.push(card);
+      st.log.unshift(me.name + " نزّل ورقة بلا أخذ");
+      playSound("tick");
+      st.lastMove = { card: card, taken: [], basra: false };
+    }
+    hand.splice(handIdx, 1);
+    st.log = st.log.slice(0, 3);
+    render();
+
+    setTimeout(function () {
+      /* لو خرج اللاعب من اللعبة أثناء الانتظار، لا تُكمل الدور */
+      if (!S.basra || S.basra !== st) return;
+      st.busy = false;
+      if (basraHandsEmpty()) {
+        if (st.deck.length) { basraDealHands(); st.turnIdx += 1; saveGameState(); render(); return; }
+        finishBasraGame();
+        return;
+      }
+      st.turnIdx += 1;
+      saveGameState();
+      render();
+    }, 620);
+  }
+
+  function finishBasraGame() {
+    var st = S.basra;
+    /* آخر من التقط يأخذ ما تبقّى على الطاولة */
+    if (st.table.length && st.lastCapturer) {
+      st.piles[st.lastCapturer] = st.piles[st.lastCapturer].concat(st.table);
+      st.table = [];
+    }
+    var results = S.players.map(function (p) {
+      var pile = st.piles[p.id];
+      var pts = 0;
+      pile.forEach(function (c) { pts += basraCardPoints(c); });
+      pts += st.basras[p.id] * 10;
+      return { id: p.id, name: p.name, cards: pile.length, points: pts, basras: st.basras[p.id] };
+    });
+    var maxCards = Math.max.apply(null, results.map(function (r) { return r.cards; }));
+    var leaders = results.filter(function (r) { return r.cards === maxCards; });
+    if (leaders.length === 1) leaders[0].points += 3;   /* أكثر أوراق: +3 */
+    results.sort(function (a, b) { return b.points - a.points || b.cards - a.cards; });
+    st.results = results;
+    S.scores = {};
+    results.forEach(function (r) { S.scores[r.id] = r.points; });
+    saveGameState();
+    var isDraw = results.length > 1 && results[0].points === results[1].points;
+    finalizeBoardGame(results.map(function (r) { return r.id; }), isDraw);
+  }
+
+  /* ---- رسم الأوراق ---- */
+  function basraCardHtml(c, opts) {
+    opts = opts || {};
+    var si = basraSuitInfo(c);
+    return '<div class="pcard' + (si.red ? " pcard-red" : "") + (opts.small ? " pcard-sm" : "") + '"' +
+      (opts.onclick ? ' onclick="' + opts.onclick + '"' : "") +
+      (opts.style ? ' style="' + opts.style + '"' : "") + ">" +
+      '<span class="pc-r">' + c.r + "</span>" +
+      '<span class="pc-s">' + si.sym + "</span></div>";
+  }
+  function basraCardBack() { return '<div class="pcard pcard-back"><span>🎴</span></div>'; }
+
+  function renderBasra() {
+    var st = S.basra;
+    var cur = basraCurrentPlayer();
+    var html = "";
+    html += topbar(true);
+    html += '<div class="hero" style="padding-top:2px"><div class="hero-title" style="font-size:24px">باصرة</div>' +
+      '<div class="hero-sub">دور ' + esc(cur.name) + " — باقٍ في الكوتشينة " + st.deck.length + " ورقة</div></div>";
+
+    html += '<div class="card" style="padding:13px">';
+    html += '<div class="section-label" style="margin-bottom:9px">🃏 الطاولة (' + st.table.length + ")</div>";
+    html += '<div class="pcard-row">' + (st.table.length
+      ? st.table.map(function (c) { return basraCardHtml(c); }).join("")
+      : '<div class="footnote" style="padding:14px 0">الطاولة فاضية — أول ورقة تنزل تبقى</div>') + "</div>";
+    html += "</div>";
+
+    if (st.log[0]) html += '<div class="reveal-banner" data-ok="' + (st.lastMove && st.lastMove.taken.length ? 1 : 0) + '" style="font-size:14px">' + esc(st.log[0]) + "</div>";
+
+    html += '<div class="card" style="padding:13px">';
+    html += '<div class="section-label" style="margin-bottom:9px">أوراق ' + esc(cur.name) + "</div>";
+    html += '<div class="pcard-row">' + st.hands[cur.id].map(function (c, i) {
+      return basraCardHtml(c, { onclick: "Game.playBasraCard(" + i + ")" });
+    }).join("") + "</div>";
+    html += '<div class="footnote" style="margin-top:9px">اضغط ورقة لتلعبها — الولد 🃏 يكنس كل الطاولة، والمطابقة بالرقم أو بالجمع تأخذ الأوراق</div>';
+    html += "</div>";
+
+    html += '<div class="scorebar">' + S.players.map(function (p) {
+      return '<div class="score-pill" data-turn="' + (p.id === cur.id ? 1 : 0) + '"><div class="avatar" style="background:' + p.color + '">' + esc(initials(p.name)) + '</div><span class="pn">' + esc(p.name) + '</span><span class="ps">' + st.piles[p.id].length + (st.basras[p.id] ? " 🔥" + st.basras[p.id] : "") + "</span></div>";
+    }).join("") + "</div>";
+
+    html += '<button class="btn btn-ghost btn-block" onclick="Game.newGame()">إنهاء والعودة</button>';
+    return html;
+  }
+
+  /* ---------- عائلتي وأصحابي: قائمة إرسال سريعة ----------
+     تُحفظ على جهاز صاحب اللعبة فقط (localStorage) ولا تُرسل لأي مكان. */
+  var CONTACT_GROUPS = { family: "عائلتي", friends: "أصحابي" };
+
+  function loadContacts() {
+    try {
+      var raw = localStorage.getItem("ft_contacts_v1");
+      var list = raw ? JSON.parse(raw) : [];
+      return Array.isArray(list) ? list : [];
+    } catch (e) { return []; }
+  }
+  function saveContacts(list) {
+    try { localStorage.setItem("ft_contacts_v1", JSON.stringify(list)); } catch (e) {}
+    S.contacts = list;
+  }
+  function normalizePhone(raw) {
+    var d = String(raw || "").replace(/[^\d+]/g, "");
+    if (d.indexOf("+") === 0) d = d.slice(1).replace(/\+/g, "");
+    else d = d.replace(/\+/g, "");
+    if (d.indexOf("00") === 0) d = d.slice(2);
+    return d;
+  }
+  function openContacts() { tapFeedback(); S.screen = "contacts"; S.showShare = false; render(); }
+  function setContactGroup(g) { S.contactGroup = g; render(); }
+
+  function addContact() {
+    var nameEl = document.getElementById("ctName");
+    var phoneEl = document.getElementById("ctPhone");
+    if (!nameEl || !phoneEl) return;
+    var name = (nameEl.value || "").trim();
+    var phone = normalizePhone(phoneEl.value);
+    if (!name) { S.contactWarn = "اكتب الاسم"; render(); return; }
+    if (phone.length < 8) { S.contactWarn = "اكتب الرقم مع مفتاح الدولة، مثال ٩٦٢٧٩١٢٣٤٥٦٧"; render(); return; }
+    var list = loadContacts();
+    if (list.some(function (c) { return c.phone === phone; })) { S.contactWarn = "هذا الرقم مضاف من قبل"; render(); return; }
+    list.push({ id: uid(), name: name, phone: phone, group: S.contactGroup || "family" });
+    saveContacts(list);
+    S.contactWarn = "";
+    render();
+  }
+  function removeContact(id) {
+    saveContacts(loadContacts().filter(function (c) { return c.id !== id; }));
+    render();
+  }
+  function moveContact(id) {
+    var list = loadContacts();
+    list.forEach(function (c) { if (c.id === id) c.group = c.group === "family" ? "friends" : "family"; });
+    saveContacts(list);
+    render();
+  }
+  function inviteText() {
+    return (S.gameCode
+      ? "العب معي في ملك الألعاب 🎲 — ادخل غرفتي من هنا:\n"
+      : "جرّب ملك الألعاب 🎲 — إحدى عشرة لعبة عربية من جوالك، بلا تحميل:\n") + shareUrl();
+  }
+  function sendToContact(id) {
+    var c = loadContacts().filter(function (x) { return x.id === id; })[0];
+    if (!c) return;
+    var u = "https://wa.me/" + c.phone + "?text=" + encodeURIComponent(inviteText());
+    try { window.open(u, "_blank", "noopener"); } catch (e) { location.href = u; }
+  }
+  function copyInviteText() {
+    var txt = inviteText();
+    function done() { S.inviteCopied = true; render(); setTimeout(function () { S.inviteCopied = false; render(); }, 2200); }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(txt).then(done, done); return; }
+    } catch (e) {}
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select(); document.execCommand("copy");
+      document.body.removeChild(ta); done();
+    } catch (e2) {}
+  }
+
+  function renderContacts() {
+    var list = loadContacts();
+    var group = S.contactGroup || "family";
+    var inGroup = list.filter(function (c) { return c.group === group; });
+    var html = "";
+    html += '<div class="backbar"><button class="back-btn" onclick="Game.goHome()">' + svgIcon("chevronRight") + " الألعاب</button></div>";
+    html += '<div style="padding:2px 2px 4px"><div class="lg-title">عائلتي وأصحابي</div>' +
+      '<div class="lg-sub">احفظهم مرة وحدة، وبعدها ضغطة وحدة تدعوهم للّعب</div></div>';
+
+    html += '<div class="card"><div class="mode-toggle" style="margin-bottom:14px">' +
+      Object.keys(CONTACT_GROUPS).map(function (g) {
+        var n = list.filter(function (c) { return c.group === g; }).length;
+        return '<button class="choice-chip" data-on="' + (group === g ? 1 : 0) + '" onclick="Game.setContactGroup(\'' + g + '\')">' +
+          CONTACT_GROUPS[g] + (n ? " (" + n + ")" : "") + "</button>";
+      }).join("") + "</div>";
+
+    html += '<div class="section-label">أضف إلى ' + CONTACT_GROUPS[group] + "</div>";
+    html += '<div class="custom-form" style="margin-top:0">';
+    html += '<input id="ctName" class="text-input" placeholder="الاسم — مثال: أبو محمد" maxlength="24">';
+    html += '<input id="ctPhone" class="text-input" type="tel" inputmode="tel" placeholder="رقم الواتساب مع مفتاح الدولة" style="direction:ltr;text-align:left" onkeydown="if(event.key===\'Enter\')Game.addContact()">';
+    html += '<div class="footnote" style="text-align:right">اكتب الرقم بمفتاح الدولة بدون + أو أصفار، مثال: 962791234567</div>';
+    if (S.contactWarn) html += '<div class="warn">' + esc(S.contactWarn) + "</div>";
+    html += '<button class="btn btn-primary" onclick="Game.addContact()">أضف</button>';
+    html += "</div></div>";
+
+    if (inGroup.length) {
+      html += '<div class="card"><div class="section-label">' + CONTACT_GROUPS[group] + " (" + inGroup.length + ")</div>";
+      html += '<div class="share-actions">' + inGroup.map(function (c, i) {
+        return '<div class="contact-row" style="animation-delay:' + (i * 40) + 'ms">' +
+          '<div class="avatar" style="background:' + PLAYER_COLORS[i % PLAYER_COLORS.length] + '">' + esc(initials(c.name)) + "</div>" +
+          '<div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px">' + esc(c.name) + "</div>" +
+          '<div style="font-size:12px;color:var(--text-2);direction:ltr;text-align:right">+' + esc(c.phone) + "</div></div>" +
+          '<button class="wa-btn" onclick="Game.sendToContact(\'' + c.id + '\')">إرسال</button>' +
+          '<button class="remove-btn" onclick="Game.moveContact(\'' + c.id + '\')" aria-label="انقل للمجموعة الأخرى">⇄</button>' +
+          '<button class="remove-btn" onclick="Game.removeContact(\'' + c.id + '\')" aria-label="حذف">' + svgIcon("x") + "</button>" +
+          "</div>";
+      }).join("") + "</div>";
+      html += '<button class="btn btn-ghost btn-block" style="margin-top:12px" onclick="Game.copyInviteText()">' +
+        (S.inviteCopied ? "تم نسخ الدعوة ✓" : "انسخ الدعوة لتلصقها في قروب") + "</button>";
+      html += "</div>";
+    } else {
+      html += '<div class="footnote">ما في أحد في ' + CONTACT_GROUPS[group] + " بعد — أضف أول واحد من فوق.</div>";
+    }
+
+    html += '<div class="footnote">الأسماء والأرقام محفوظة على جهازك أنت فقط، وما تُرسل لأي مكان.</div>';
+    return html;
+  }
+
+  /* ---------- طرنيب (Tarneeb) — أنت وشريكك ضد خصمين ----------
+     4 مقاعد: 0 أنت، 1 خصم، 2 شريكك، 3 خصم. الفريق أ = {0,2}، الفريق ب = {1,3} */
+  var TRN_SEATS = ["أنت", "الخصم الأول", "شريكك", "الخصم الثاني"];
+  var TRN_RANK_ORDER = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+  function trnRankVal(r) { return TRN_RANK_ORDER.indexOf(r); }
+  function trnTeamOf(seat) { return seat % 2 === 0 ? 0 : 1; }
+
+  function startTarneebGame() {
+    var deck = shuffleWithRng(basraDeck(), Math.random);
+    var hands = [[], [], [], []];
+    for (var i = 0; i < 52; i++) hands[i % 4].push(deck[i]);
+    hands.forEach(function (h) {
+      h.sort(function (a, b) {
+        if (a.s !== b.s) return a.s < b.s ? -1 : 1;
+        return trnRankVal(b.r) - trnRankVal(a.r);
+      });
+    });
+    S.tarneeb = {
+      hands: hands,
+      phase: "bid",           /* bid | trump | play | done */
+      bids: [null, null, null, null],
+      bidTurn: 0,
+      highBid: 0, highSeat: -1,
+      trump: null,
+      leader: 0, turn: 0,
+      trick: [],              /* [{seat, card}] */
+      tricksWon: [0, 0],      /* لكل فريق */
+      lastTrick: null,
+      log: [],
+      busy: false,
+      round: 0
+    };
+    S.screen = "board";
+    saveGameState();
+    render();
+    setTimeout(tarneebStep, 500);
+  }
+
+  /* --- تقدير قوة اليد للمزايدة --- */
+  function trnHandStrength(hand) {
+    var bySuit = { spades: [], hearts: [], diamonds: [], clubs: [] };
+    hand.forEach(function (c) { bySuit[c.s].push(c); });
+    var best = null;
+    Object.keys(bySuit).forEach(function (s) {
+      var cards = bySuit[s];
+      var score = cards.length * 0.85;
+      cards.forEach(function (c) {
+        if (c.r === "A") score += 1.0;
+        else if (c.r === "K") score += 0.65;
+        else if (c.r === "Q") score += 0.35;
+      });
+      if (!best || score > best.score) best = { suit: s, score: score, len: cards.length };
+    });
+    var aces = hand.filter(function (c) { return c.r === "A"; }).length;
+    var kings = hand.filter(function (c) { return c.r === "K"; }).length;
+    var est = best.score * 0.62 + aces * 0.55 + kings * 0.3;
+    return { suit: best.suit, tricks: Math.round(est) };
+  }
+
+  function tarneebBid(n) {
+    var st = S.tarneeb;
+    if (!st || st.phase !== "bid" || st.bidTurn !== 0) return;
+    if (n !== 0 && n <= st.highBid) return;
+    applyBid(0, n);
+    setTimeout(tarneebStep, 420);
+  }
+  function applyBid(seat, n) {
+    var st = S.tarneeb;
+    st.bids[seat] = n;
+    if (n > st.highBid) { st.highBid = n; st.highSeat = seat; }
+    st.log.unshift(TRN_SEATS[seat] + (n === 0 ? " باس" : " زايد " + n));
+    st.log = st.log.slice(0, 3);
+    st.bidTurn = seat + 1;
+    render();
+  }
+  function chooseTrump(suit) {
+    var st = S.tarneeb;
+    if (!st || st.phase !== "trump" || st.highSeat !== 0) return;
+    st.trump = suit;
+    st.phase = "play";
+    st.leader = st.highSeat;
+    st.turn = st.highSeat;
+    setTimeout(tarneebWatchdog, 600);
+    st.log.unshift("الطرنيب: " + basraSuitInfo({ s: suit }).ar + " " + basraSuitInfo({ s: suit }).sym);
+    saveGameState();
+    render();
+    setTimeout(tarneebStep, 500);
+  }
+
+  /* --- محرّك التقدّم: يشغّل أدوار الكمبيوتر تلقائيًا --- */
+  function tarneebStep() {
+    var st = S.tarneeb;
+    if (!st || S.screen !== "board" || S.gameType !== "tarneeb") return;
+
+    if (st.phase === "bid") {
+      if (st.bidTurn > 3) {
+        if (st.highSeat === -1) { startTarneebGame(); return; }   /* الكل باس: توزيع جديد */
+        st.phase = "trump";
+        if (st.highSeat !== 0) {
+          var s = trnHandStrength(st.hands[st.highSeat]);
+          st.trump = s.suit;
+          st.phase = "play";
+          st.leader = st.highSeat; st.turn = st.highSeat;
+          st.log.unshift(TRN_SEATS[st.highSeat] + " اختار الطرنيب: " + basraSuitInfo({ s: st.trump }).ar);
+          render();
+          setTimeout(tarneebStep, 700);
+          setTimeout(tarneebWatchdog, 600);
+          return;
+        }
+        render();
+        return;
+      }
+      if (st.bidTurn === 0) { render(); return; }   /* دورك أنت */
+      var est = trnHandStrength(st.hands[st.bidTurn]).tricks;
+      var bid = est >= 7 && est > st.highBid ? Math.min(13, est) : 0;
+      applyBid(st.bidTurn, bid);
+      setTimeout(tarneebStep, 520);
+      return;
+    }
+
+    if (st.phase === "play") {
+      /* شبكة أمان: خلصت كل الأوراق ولم تُحسب النتيجة بعد */
+      if (st.trick.length === 0 && tarneebAllHandsEmpty()) { finishTarneeb(); return; }
+      if (st.trick.length === 4) { setTimeout(resolveTarneebTrick, 700); return; }
+      if (st.turn === 0) {                          /* دورك أنت */
+        if (!st.hands[0].length) { setTimeout(tarneebStep, 400); return; }
+        render();
+        return;
+      }
+      var card = tarneebAiPick(st.turn);
+      playTarneebCardBySeat(st.turn, card);
+      setTimeout(tarneebStep, 620);
+      return;
+    }
+  }
+
+  function tarneebAllHandsEmpty() {
+    var st = S.tarneeb;
+    if (!st) return false;
+    for (var i = 0; i < st.hands.length; i++) if (st.hands[i].length) return false;
+    return true;
+  }
+  /* مراقب: يفحص كل ثانية ونصف أن الجولة لم تعلق، ويحسم النتيجة إن لزم */
+  function tarneebWatchdog() {
+    var st = S.tarneeb;
+    if (!st || S.screen !== "board" || S.gameType !== "tarneeb") return;
+    if (st.phase === "play") {
+      if (tarneebAllHandsEmpty() && st.trick.length < 4) { finishTarneeb(); return; }
+      if (st.trick.length === 4) { resolveTarneebTrick(); }
+      else if (st.turn !== 0 && st.hands[st.turn] && st.hands[st.turn].length) {
+        /* دور الكمبيوتر وما تحرّك: ادفعه */
+        st.stall = (st.stall || 0) + 1;
+        if (st.stall > 3) { st.stall = 0; tarneebStep(); }
+      } else { st.stall = 0; }
+    }
+    if (st.phase === "play") st.watchHandle = setTimeout(tarneebWatchdog, 400);
+  }
+
+  function trnLegalCards(seat) {
+    var st = S.tarneeb;
+    var hand = st.hands[seat];
+    if (!st.trick.length) return hand.slice();
+    var led = st.trick[0].card.s;
+    var follow = hand.filter(function (c) { return c.s === led; });
+    return follow.length ? follow : hand.slice();
+  }
+  function trnTrickWinner(trick, trump) {
+    var led = trick[0].card.s;
+    var best = trick[0];
+    trick.forEach(function (e) {
+      var isTrump = e.card.s === trump, bestTrump = best.card.s === trump;
+      if (isTrump && !bestTrump) { best = e; return; }
+      if (isTrump === bestTrump && e.card.s === best.card.s && trnRankVal(e.card.r) > trnRankVal(best.card.r)) best = e;
+      if (!isTrump && !bestTrump && best.card.s !== led && e.card.s === led) best = e;
+    });
+    return best.seat;
+  }
+  function tarneebAiPick(seat) {
+    var st = S.tarneeb;
+    var legal = trnLegalCards(seat);
+    var trump = st.trump;
+    function low(list) {
+      return list.slice().sort(function (a, b) { return trnRankVal(a.r) - trnRankVal(b.r); })[0];
+    }
+    function high(list) {
+      return list.slice().sort(function (a, b) { return trnRankVal(b.r) - trnRankVal(a.r); })[0];
+    }
+    if (!st.trick.length) {
+      var nonTrump = legal.filter(function (c) { return c.s !== trump; });
+      var aces = legal.filter(function (c) { return c.r === "A"; });
+      if (aces.length) return aces[0];
+      return high(nonTrump.length ? nonTrump : legal);
+    }
+    var winnerSeat = trnTrickWinner(st.trick, trump);
+    var partnerWinning = trnTeamOf(winnerSeat) === trnTeamOf(seat);
+    var led = st.trick[0].card.s;
+    var canFollow = legal[0] && legal[0].s === led && legal.some(function (c) { return c.s === led; });
+
+    if (partnerWinning) return low(legal);
+
+    var winners = legal.filter(function (c) {
+      var test = st.trick.concat([{ seat: seat, card: c }]);
+      return trnTrickWinner(test, trump) === seat;
+    });
+    if (winners.length) {
+      var cheapTrump = winners.filter(function (c) { return c.s === trump; });
+      var cheapPlain = winners.filter(function (c) { return c.s !== trump; });
+      if (cheapPlain.length) return low(cheapPlain);
+      return low(cheapTrump);
+    }
+    return low(legal);
+  }
+
+  function playTarneebCardBySeat(seat, card) {
+    var st = S.tarneeb;
+    var hand = st.hands[seat];
+    for (var i = 0; i < hand.length; i++) {
+      if (hand[i].r === card.r && hand[i].s === card.s) { hand.splice(i, 1); break; }
+    }
+    st.trick.push({ seat: seat, card: card });
+    st.turn = (seat + 1) % 4;
+    playSound("tick");
+    render();
+    if (st.trick.length === 4) setTimeout(resolveTarneebTrick, 800);
+  }
+  function playTarneebCard(handIdx) {
+    var st = S.tarneeb;
+    if (!st || st.phase !== "play" || st.turn !== 0 || st.trick.length === 4) return;
+    var legal = trnLegalCards(0);
+    var card = st.hands[0][handIdx];
+    if (!card) return;
+    var isLegal = legal.some(function (c) { return c.r === card.r && c.s === card.s; });
+    if (!isLegal) { flashWarn("لازم تلعب من نفس النوع المطلوب"); return; }
+    playTarneebCardBySeat(0, card);
+    if (st.trick.length < 4) setTimeout(tarneebStep, 600);
+  }
+  function resolveTarneebTrick() {
+    var st = S.tarneeb;
+    if (!st || st.trick.length !== 4 || S.screen !== "board" || S.gameType !== "tarneeb") return;
+    var w = trnTrickWinner(st.trick, st.trump);
+    st.tricksWon[trnTeamOf(w)] += 1;
+    st.lastTrick = { winner: w, cards: st.trick.slice() };
+    st.log.unshift("أخذها " + TRN_SEATS[w]);
+    st.log = st.log.slice(0, 3);
+    st.trick = [];
+    st.leader = w;
+    st.turn = w;
+    st.round += 1;
+    if (trnTeamOf(w) === 0) { playSound("correct"); } else { playSound("wrong"); }
+    saveGameState();
+    render();
+    if (st.hands[0].length === 0) {
+      setTimeout(function () { if (S.tarneeb === st) finishTarneeb(); }, 900);
+      return;
+    }
+    setTimeout(tarneebStep, 700);
+  }
+  function finishTarneeb() {
+    var st = S.tarneeb;
+    if (!st || st.phase === "done") return;
+    st.phase = "done";
+    clearTimeout(st.watchHandle);
+    var bidTeam = trnTeamOf(st.highSeat);
+    var made = st.tricksWon[bidTeam] >= st.highBid;
+    var scoreA, scoreB;
+    if (bidTeam === 0) {
+      scoreA = made ? st.tricksWon[0] : -st.highBid;
+      scoreB = st.tricksWon[1];
+    } else {
+      scoreB = made ? st.tricksWon[1] : -st.highBid;
+      scoreA = st.tricksWon[0];
+    }
+    st.finalScore = { a: scoreA, b: scoreB, made: made, bidTeam: bidTeam };
+    saveGameState();
+    var me = S.players[0];
+    S.scores = {};
+    S.scores[me.id] = Math.max(0, scoreA * 100 + 200);
+    S.screen = "winner";
+    render();
+    playSound("win");
+    if (scoreA > scoreB) startConfetti();
+    pushToHOF([{ name: me.name, score: S.scores[me.id] }]);
+    awardPoints([{ name: me.name, points: scoreA > scoreB ? 50 : 10 }]);
+    clearGameState();
+  }
+
+  function renderTarneeb() {
+    var st = S.tarneeb;
+    var html = "";
+    html += topbar(true);
+    var trumpTxt = st.trump ? basraSuitInfo({ s: st.trump }).sym + " " + basraSuitInfo({ s: st.trump }).ar : "—";
+    html += '<div class="hero" style="padding-top:2px"><div class="hero-title" style="font-size:24px">طرنيب</div>' +
+      '<div class="hero-sub">' +
+      (st.phase === "bid" ? "المزايدة — أعلى مزايدة: " + (st.highBid || "لا شيء")
+        : st.phase === "trump" ? "اختر الطرنيب"
+        : "الطرنيب: " + trumpTxt + " — أنتم " + st.tricksWon[0] + " / هم " + st.tricksWon[1]) +
+      "</div></div>";
+
+    if (st.phase === "bid") {
+      html += '<div class="card"><div class="section-label">مزايدتك (أنت وشريكك ضد خصمين)</div>';
+      html += '<div class="pcard-row" style="margin-bottom:12px">' + st.hands[0].map(function (c) {
+        return basraCardHtml(c, { small: true });
+      }).join("") + "</div>";
+      if (st.bidTurn === 0) {
+        html += '<div class="chip-row" style="justify-content:center">';
+        for (var b = 7; b <= 13; b++) {
+          html += '<button class="choice-chip"' + (b <= st.highBid ? ' disabled style="opacity:.35"' : "") +
+            ' onclick="Game.tarneebBid(' + b + ')">' + b + "</button>";
+        }
+        html += '<button class="choice-chip" onclick="Game.tarneebBid(0)">باس</button></div>';
+        var sug = trnHandStrength(st.hands[0]);
+        html += '<div class="footnote" style="margin-top:10px">يدك تقترح حوالي ' + sug.tricks + " أكلات — الأفضل عندك " + basraSuitInfo({ s: sug.suit }).ar + "</div>";
+      } else {
+        html += '<div class="footnote">' + esc(TRN_SEATS[st.bidTurn]) + " يزايد…</div>";
+      }
+      html += "</div>";
+      if (st.log[0]) html += '<div class="footnote">' + esc(st.log[0]) + "</div>";
+      html += '<button class="btn btn-ghost btn-block" onclick="Game.newGame()">إنهاء والعودة</button>';
+      return html;
+    }
+
+    if (st.phase === "trump") {
+      html += '<div class="card"><div class="section-label">أنت أعلى مزايد (' + st.highBid + ") — اختر الطرنيب</div>";
+      html += '<div class="pcard-row" style="margin-bottom:12px">' + st.hands[0].map(function (c) {
+        return basraCardHtml(c, { small: true });
+      }).join("") + "</div>";
+      html += '<div class="chip-row" style="justify-content:center">' + BASRA_SUITS.map(function (su) {
+        var n = st.hands[0].filter(function (c) { return c.s === su.s; }).length;
+        return '<button class="choice-chip" onclick="Game.chooseTrump(\'' + su.s + '\')" style="font-size:15px">' +
+          su.sym + " " + su.ar + " (" + n + ")</button>";
+      }).join("") + "</div></div>";
+      html += '<button class="btn btn-ghost btn-block" onclick="Game.newGame()">إنهاء والعودة</button>';
+      return html;
+    }
+
+    /* طاولة اللعب */
+    html += '<div class="card" style="padding:14px">';
+    html += '<div class="trn-table">' + [2, 1, 3, 0].map(function (seat) {
+      var played = st.trick.filter(function (e) { return e.seat === seat; })[0];
+      var isTurn = st.turn === seat && st.trick.length < 4;
+      var teamCls = trnTeamOf(seat) === 0 ? "trn-us" : "trn-them";
+      return '<div class="trn-slot ' + teamCls + '" data-turn="' + (isTurn ? 1 : 0) + '">' +
+        '<div class="trn-name">' + TRN_SEATS[seat] + (seat === 0 ? "" : " · " + st.hands[seat].length) + "</div>" +
+        (played ? basraCardHtml(played.card, { small: true }) : '<div class="trn-empty">' + (isTurn ? "…" : "") + "</div>") +
+        "</div>";
+    }).join("") + "</div>";
+    html += "</div>";
+
+    if (st.log[0]) html += '<div class="footnote">' + esc(st.log[0]) + "</div>";
+
+    html += '<div class="card" style="padding:13px"><div class="section-label">أوراقك (' + st.hands[0].length + ")</div>";
+    var legal = st.turn === 0 && st.trick.length < 4 ? trnLegalCards(0) : [];
+    html += '<div class="pcard-row">' + st.hands[0].map(function (c, i) {
+      var ok = legal.some(function (l) { return l.r === c.r && l.s === c.s; });
+      return basraCardHtml(c, {
+        small: true,
+        onclick: "Game.playTarneebCard(" + i + ")",
+        style: ok ? "" : "opacity:.38;filter:grayscale(.5)"
+      });
+    }).join("") + "</div>";
+    html += '<div class="footnote" style="margin-top:9px">' +
+      (st.turn === 0 && st.trick.length < 4 ? "دورك — اضغط ورقة" : "انتظر بقية اللاعبين…") + "</div></div>";
+
+    html += '<button class="btn btn-ghost btn-block" onclick="Game.newGame()">إنهاء والعودة</button>';
+    return html;
+  }
+
+  /* ---------- حيوان جماد بلاد ----------
+     يُسحب حرف، وكل لاعب يملأ الخانات بوقت محدد، ثم تراجعون الإجابات وتحتسب النقاط:
+     إجابة صحيحة منفردة 10، مكررة 5، فاضية أو مرفوضة 0. */
+  var HGB_CATS = [
+    { k: "name", label: "اسم", icon: "🧑" },
+    { k: "animal", label: "حيوان", icon: "🐪" },
+    { k: "object", label: "جماد", icon: "🪑" },
+    { k: "plant", label: "نبات", icon: "🌿" },
+    { k: "country", label: "بلاد", icon: "🗺️" },
+    { k: "food", label: "أكلة", icon: "🍲" }
+  ];
+  var HGB_LETTERS = ["ا", "ب", "ت", "ج", "ح", "خ", "د", "ر", "ز", "س", "ش", "ص", "ط", "ع", "ف", "ق", "ك", "ل", "م", "ن", "ه", "و", "ي"];
+  var HGB_TIME_OPTIONS = { 10: 60, 15: 90, 20: 120, 25: 150 };
+
+  /* تطبيع الحروف: الهمزات والألف بأشكالها ألف، والتاء المربوطة هاء، والألف المقصورة ياء */
+  function hgbNormalizeChar(ch) {
+    if ("أإآاٱ".indexOf(ch) !== -1) return "ا";
+    if (ch === "ة") return "ه";
+    if (ch === "ى") return "ي";
+    return ch;
+  }
+  /* تطبيع الكلمة كاملة — لكشف التكرار بين اللاعبين بعدل */
+  function hgbNormalizeWord(w) {
+    var s = String(w || "").trim().replace(/[ً-ْـ]/g, "").replace(/\s+/g, " ");
+    s = s.replace(/^ال/, "");
+    var out = "";
+    for (var i = 0; i < s.length; i++) out += hgbNormalizeChar(s.charAt(i));
+    return out;
+  }
+  function hgbFirstLetter(word) {
+    var w = hgbNormalizeWord(word);
+    return w ? w.charAt(0) : "";
+  }
+  function hgbStartsWith(word, letter) {
+    var f = hgbFirstLetter(word);
+    return !!f && f === hgbNormalizeChar(letter);
+  }
+
+  function startHgbGame() {
+    var seconds = HGB_TIME_OPTIONS[S.totalWanted] || 90;
+    S.hgb = {
+      letter: HGB_LETTERS[Math.floor(Math.random() * HGB_LETTERS.length)],
+      seconds: seconds,
+      left: seconds,
+      phase: "letter",
+      playerIdx: 0,
+      answers: {},
+      verdicts: {},
+      timerHandle: null,
+      points: {}
+    };
+    S.players.forEach(function (p) { S.hgb.answers[p.id] = {}; S.hgb.verdicts[p.id] = {}; });
+    S.screen = "board";
+    saveGameState();
+    render();
+  }
+  function hgbCurrentPlayer() { return S.players[S.hgb.playerIdx]; }
+
+  function hgbBeginWriting() {
+    var st = S.hgb;
+    if (!st || st.phase !== "letter") return;
+    st.phase = "write";
+    st.left = st.seconds;
+    render();
+    hgbTick();
+  }
+  function hgbTick() {
+    var st = S.hgb;
+    if (!st) return;
+    clearTimeout(st.timerHandle);
+    st.timerHandle = setTimeout(function () {
+      if (!S.hgb || S.hgb !== st || st.phase !== "write") return;
+      st.left -= 1;
+      var el = document.getElementById("hgbClock");
+      if (el) el.textContent = st.left;
+      if (st.left <= 0) { hgbSubmit(true); return; }
+      if (st.left <= 5) playSound("tick");
+      hgbTick();
+    }, 1000);
+  }
+  /* يحفظ مع كل حرف يُكتب حتى لا تضيع الإجابات لو أُعيد رسم الشاشة */
+  function hgbSave(cat, val) {
+    var st = S.hgb;
+    if (!st || st.phase !== "write") return;
+    var me = hgbCurrentPlayer();
+    if (me) st.answers[me.id][cat] = String(val || "").trim();
+  }
+  function hgbReadInputs() {
+    var st = S.hgb;
+    var me = hgbCurrentPlayer();
+    if (!me) return;
+    HGB_CATS.forEach(function (c) {
+      var el = document.getElementById("hgb_" + c.k);
+      if (el) st.answers[me.id][c.k] = (el.value || "").trim();
+    });
+  }
+  function hgbSubmit(auto) {
+    var st = S.hgb;
+    if (!st || st.phase !== "write") return;
+    clearTimeout(st.timerHandle);
+    hgbReadInputs();
+    if (auto) playSound("wrong");
+    st.playerIdx += 1;
+    if (st.playerIdx >= S.players.length) {
+      S.players.forEach(function (p) {
+        HGB_CATS.forEach(function (c) {
+          var w = st.answers[p.id][c.k] || "";
+          st.verdicts[p.id][c.k] = !!w && hgbStartsWith(w, st.letter);
+        });
+      });
+      st.phase = "review";
+      st.playerIdx = 0;
+      saveGameState();
+      render();
+      return;
+    }
+    st.phase = "letter";
+    saveGameState();
+    render();
+  }
+  function hgbToggleVerdict(pid, cat) {
+    var st = S.hgb;
+    if (!st || st.phase !== "review") return;
+    if (!(st.answers[pid] || {})[cat]) return;
+    st.verdicts[pid][cat] = !st.verdicts[pid][cat];
+    render();
+  }
+  function hgbFinish() {
+    var st = S.hgb;
+    if (!st || st.phase !== "review") return;
+    var totals = {};
+    S.players.forEach(function (p) { totals[p.id] = 0; });
+    HGB_CATS.forEach(function (c) {
+      var counts = {};
+      S.players.forEach(function (p) {
+        if (!st.verdicts[p.id][c.k]) return;
+        var key = hgbNormalizeWord(st.answers[p.id][c.k]);
+        if (!key) return;
+        counts[key] = (counts[key] || 0) + 1;
+      });
+      S.players.forEach(function (p) {
+        if (!st.verdicts[p.id][c.k]) return;
+        var key2 = hgbNormalizeWord(st.answers[p.id][c.k]);
+        if (!key2) return;
+        totals[p.id] += counts[key2] > 1 ? 5 : 10;
+      });
+    });
+    st.points = totals;
+    st.phase = "done";
+    clearTimeout(st.timerHandle);
+    S.scores = {};
+    S.players.forEach(function (p) { S.scores[p.id] = totals[p.id]; });
+    var ranked = S.players.slice().sort(function (a, b) { return totals[b.id] - totals[a.id]; });
+    var isDraw = ranked.length > 1 && totals[ranked[0].id] === totals[ranked[1].id];
+    saveGameState();
+    finalizeBoardGame(ranked.map(function (p) { return p.id; }), isDraw);
+  }
+
+  function renderHgb() {
+    var st = S.hgb;
+    var html = "";
+    html += topbar(true);
+
+    if (st.phase === "letter") {
+      var me = hgbCurrentPlayer();
+      html += '<div class="hero" style="padding-top:2px"><div class="hero-title" style="font-size:24px">حيوان جماد بلاد</div>' +
+        '<div class="hero-sub">دور ' + esc(me.name) + " — باقٍ " + (S.players.length - st.playerIdx) + " من " + S.players.length + "</div></div>";
+      html += '<div class="card" style="text-align:center">';
+      html += '<div class="section-label" style="justify-content:center">الحرف</div>';
+      html += '<div class="hgb-letter">' + st.letter + "</div>";
+      html += '<div class="footnote" style="margin:12px 0 4px">عندك ' + st.seconds + " ثانية تملأ " + HGB_CATS.length +
+        ' خانات — كل إجابة لازم تبدأ بحرف "' + st.letter + '"</div>';
+      html += '<button class="btn btn-primary btn-block" style="margin-top:12px" onclick="Game.hgbBeginWriting()">ابدأ دوري</button>';
+      html += "</div>";
+      html += '<div class="footnote">مرّر الجهاز إلى ' + esc(me.name) + " قبل الضغط — ولا تخلّي غيره يشوف إجاباتك</div>";
+      html += '<button class="btn btn-ghost btn-block" onclick="Game.newGame()">إنهاء والعودة</button>';
+      return html;
+    }
+
+    if (st.phase === "write") {
+      var meW = hgbCurrentPlayer();
+      html += '<div class="hgb-bar"><div class="hgb-letter-sm">' + st.letter + "</div>" +
+        '<div style="flex:1"><div style="font-weight:800;font-size:15px">' + esc(meW.name) + "</div>" +
+        '<div style="font-size:12px;color:var(--text-2)">اكتب بسرعة!</div></div>' +
+        '<div class="hgb-clock"><span id="hgbClock">' + st.left + "</span></div></div>";
+      html += '<div class="card"><div class="custom-form" style="margin-top:0">' + HGB_CATS.map(function (c, ci) {
+        return '<div class="hgb-row"><span class="hgb-cat">' + c.icon + " " + c.label + "</span>" +
+          '<input id="hgb_' + c.k + '" class="text-input" autocomplete="off" autocorrect="off" spellcheck="false" ' +
+          (ci === 0 ? "autofocus " : "") +
+          'oninput="Game.hgbSave(\'' + c.k + '\',this.value)" placeholder="بحرف ' + st.letter + '..." value="' +
+          esc(st.answers[meW.id][c.k] || "") + '"></div>';
+      }).join("") + "</div></div>";
+      html += '<button class="btn btn-primary btn-block" onclick="Game.hgbSubmit()">خلّصت</button>';
+      return html;
+    }
+
+    if (st.phase === "review") {
+      /* احسب النقاط الجارية لتظهر مباشرة مع كل قبول أو رفض */
+      var live = {};
+      S.players.forEach(function (p) { live[p.id] = 0; });
+      HGB_CATS.forEach(function (c) {
+        var cnt = {};
+        S.players.forEach(function (p) {
+          if (!st.verdicts[p.id][c.k]) return;
+          var k1 = hgbNormalizeWord(st.answers[p.id][c.k]);
+          if (k1) cnt[k1] = (cnt[k1] || 0) + 1;
+        });
+        S.players.forEach(function (p) {
+          if (!st.verdicts[p.id][c.k]) return;
+          var k2 = hgbNormalizeWord(st.answers[p.id][c.k]);
+          if (k2) live[p.id] += cnt[k2] > 1 ? 5 : 10;
+        });
+      });
+
+      html += '<div class="hero" style="padding-top:2px"><div class="hero-title" style="font-size:24px">المراجعة</div>' +
+        '<div class="hero-sub">الحرف ' + st.letter + " — اضغط أي إجابة لقبولها أو رفضها</div></div>";
+
+      html += '<div class="scorebar" style="justify-content:center">' + S.players.map(function (p) {
+        return '<div class="score-pill"><div class="avatar" style="background:' + p.color + '">' + esc(initials(p.name)) +
+          '</div><span class="pn">' + esc(p.name) + '</span><span class="ps">' + live[p.id] + "</span></div>";
+      }).join("") + "</div>";
+
+      html += HGB_CATS.map(function (c) {
+        return '<div class="card" style="padding:13px"><div class="section-label">' + c.icon + " " + c.label + "</div>" +
+          S.players.map(function (p) {
+            var w = st.answers[p.id][c.k] || "";
+            var okv = st.verdicts[p.id][c.k];
+            /* سبب الرفض حتى لا يظن اللاعب أن اللعبة غلطانة */
+            var why = "";
+            if (!okv) {
+              why = !w ? "فاضية" : (!hgbStartsWith(w, st.letter) ? "ما تبدأ بحرف " + st.letter : "مرفوضة");
+            } else {
+              var dup = S.players.filter(function (o) {
+                return st.verdicts[o.id][c.k] &&
+                  hgbNormalizeWord(st.answers[o.id][c.k]) === hgbNormalizeWord(w);
+              }).length > 1;
+              why = dup ? "مكررة · 5" : "منفردة · 10";
+            }
+            return '<div class="hgb-ans" data-ok="' + (okv ? 1 : 0) + '" onclick="Game.hgbToggleVerdict(\'' + p.id + '\',\'' + c.k + '\')">' +
+              '<div class="avatar" style="background:' + p.color + ';width:26px;height:26px;font-size:11px">' + esc(initials(p.name)) + "</div>" +
+              '<span style="flex:1;min-width:0"><span style="display:block;font-weight:700;font-size:14px">' +
+              (w ? esc(w) : '<span style="color:var(--text-3)">— فاضي —</span>') + "</span>" +
+              '<span style="display:block;font-size:11px;color:var(--text-2)">' + why + "</span></span>" +
+              '<span style="font-size:17px">' + (okv ? "✅" : "❌") + "</span></div>";
+          }).join("") + "</div>";
+      }).join("");
+      html += '<div class="footnote">إجابة صحيحة منفردة = 10 نقاط · مكررة = 5 · مرفوضة أو فاضية = 0<br>تقدر تضغط أي إجابة لتغيّر الحكم — القرار لكم.</div>';
+      html += '<button class="btn btn-primary btn-block" onclick="Game.hgbFinish()">احسب النتيجة</button>';
+      return html;
+    }
+
+    return html;
+  }
+
   function renderBoard() {
     if (S.gameType === "snakes") return renderSnakes();
     if (S.gameType === "sequence") return renderSequence();
     if (S.gameType === "chess") return renderChess();
     if (S.gameType === "racing") return renderRacing();
     if (S.gameType === "xo") return renderXo();
+    if (S.gameType === "basra") return renderBasra();
+    if (S.gameType === "tarneeb") return renderTarneeb();
+    if (S.gameType === "hgb") return renderHgb();
     return "";
   }
 
@@ -2805,6 +4069,8 @@
   }
 
   function afterReveal() {
+    /* إن غادر اللاعب الجولة خلال ثانيتي الكشف، لا تخطف الشاشة الجديدة */
+    if (S.screen !== "reveal") return;
     var wasLast = S.idx >= S.pool.length - 1;
     var endOfRound = S.players.length > 1 && (S.idx + 1) % S.players.length === 0;
     S.idx += 1;
@@ -2853,6 +4119,9 @@
     S.chess = null;
     S.racing = null;
     S.xo = null;
+    S.basra = null;
+    S.tarneeb = null;
+    S.hgb = null;
     S.showShare = false;
     S.players = S.players.filter(function (p) { return p.id !== "__ai__"; });
     stopRaceLoop();
@@ -2881,7 +4150,7 @@
       ];
     } else {
       var ranked = rankedPlayers();
-      lines = ["نتائج " + (GAME_TYPES[S.gameType] ? GAME_TYPES[S.gameType].short : "ليلة الألعاب") + ":"];
+      lines = ["نتائج " + (GAME_TYPES[S.gameType] ? GAME_TYPES[S.gameType].short : "ملك الألعاب") + ":"];
       ranked.forEach(function (p, i) {
         lines.push((i + 1) + ". " + p.name + " — " + (S.scores[p.id] || 0) + " نقطة");
       });
@@ -2996,9 +4265,9 @@
     var onHome = S.screen === "home";
     return '<div class="topbar"><div class="brand">' +
       (onHome
-        ? '<div class="brand-mark"><span style="font-size:19px">🎲</span></div>'
+        ? '<div class="crown-mark">👑</div>'
         : '<button class="icon-btn" onclick="Game.newGame()" aria-label="الرئيسية">' + svgIcon("chevronRight") + "</button>") +
-      '<span class="brand-name">ليلة الألعاب</span></div>' +
+      '<span class="brand-name">ملك الألعاب</span></div>' +
       '<div style="display:flex;gap:8px">' +
       ((S.canInstall || (S.isIOS && !S.isStandalone)) ? '<button class="icon-btn" onclick="Game.' + (S.canInstall ? "installApp" : "toggleAbout") + '()" aria-label="تثبيت اللعبة">' + svgIcon("install") + "</button>" : "") +
       (onHome ? '<button class="icon-btn" onclick="Game.toggleShare()" aria-label="مشاركة">' + svgIcon("share") + "</button>" : "") +
@@ -3012,7 +4281,7 @@
     return '<div class="modal-backdrop" onclick="if(event.target===this)Game.toggleAbout()">' +
       '<div class="modal-card">' +
       '<div class="modal-head"><span class="modal-title">عن اللعبة</span><button class="icon-btn" onclick="Game.toggleAbout()" aria-label="إغلاق">' + svgIcon("x") + "</button></div>" +
-      '<p class="modal-text">ليلة الألعاب تجمع تسع ألعاب بمكان واحد — تريفيا، لو خيّروك، خمّن من الرموز، تحدي الأرقام، سباق السيارات، سلم وثعبان، سيكونس، شطرنج، وإكس أو. العبوا بالتناوب على جهاز واحد، أو أنشئ غرفة وشارك رابطها ليدخل أصحابك ويلعبوا نفس الجولة من جوالاتهم (تريفيا ولو خيّروك وخمّن من الرموز وتحدي الأرقام وسباق السيارات). كل فوز يزيد نقاطك الدائمة — تراكمها كل ليلة ألعاب. بلا تحميل وبلا تسجيل.</p>' +
+      '<p class="modal-text">ملك الألعاب يجمع إحدى عشرة لعبة بمكان واحد — تريفيا، لو خيّروك، خمّن من الرموز، تحدي الأرقام، سباق السيارات، سلم وثعبان، سيكونس، شطرنج، إكس أو، وباصرة. العبوا بالتناوب على جهاز واحد، أو أنشئ غرفة وشارك رابطها ليدخل أصحابك ويلعبوا نفس الجولة من جوالاتهم (تريفيا ولو خيّروك وخمّن من الرموز وتحدي الأرقام وسباق السيارات). كل فوز يزيد نقاطك الدائمة — تتراكم مع كل جلسة. بلا تحميل وبلا تسجيل.</p>' +
       '<p class="modal-text"><strong>فكرة الربح:</strong> حزم أسئلة إضافية (رياضة احترافية، أفلام حديثة، تاريخ عربي) بسعر رمزي، ألعاب حفلات إضافية كمحتوى مدفوع، نسخة للمدارس والفعاليات بإدارة مجموعات، أو اشتراك شهري لمن يحب ليالي الألعاب الأسبوعية.</p>' +
       (S.isIOS && !S.isStandalone
         ? '<p class="modal-text"><strong>ثبّتها على الشاشة الرئيسية (آيفون/آيباد):</strong> اضغط زر المشاركة أسفل متصفح Safari (المربع مع السهم للأعلى)، ثم اختر "إضافة إلى الشاشة الرئيسية". بعدها تفتح اللعبة بأيقونتها الخاصة بدون شريط المتصفح، متل أي تطبيق.</p>'
@@ -3408,7 +4677,10 @@
     snakes:   { icon: "🐍", tag: "لوح كلاسيكي",       g: "linear-gradient(150deg,#30d158,#0a84ff)" },
     sequence: { icon: "🃏", tag: "٥ على التوالي",     g: "linear-gradient(150deg,#5e5ce6,#bf5af0)" },
     chess:    { icon: "♟️", tag: "قوانين كاملة",      g: "linear-gradient(150deg,#8e8e93,#48484a)" },
-    xo:       { icon: "⭕", tag: "ضد صاحبك أو الجهاز", g: "linear-gradient(150deg,#ffd60a,#ff9f0a)" }
+    xo:       { icon: "⭕", tag: "ضد صاحبك أو الجهاز", g: "linear-gradient(150deg,#ffd60a,#ff9f0a)" },
+    basra:    { icon: "🎴", tag: "ورق شعبي",           g: "linear-gradient(150deg,#ff375f,#bf5af0)" },
+    tarneeb:  { icon: "♠️", tag: "أنت وشريكك",        g: "linear-gradient(150deg,#0a84ff,#5e5ce6)" },
+    hgb:      { icon: "✍️", tag: "حرف وستة خانات",    g: "linear-gradient(150deg,#40cbe0,#30d158)" }
   };
 
   function tapFeedback() { vibrate(8); }
@@ -3442,8 +4714,8 @@
   }
   function shareWhatsApp() {
     var msg = S.gameCode
-      ? "العب معي في ليلة الألعاب 🎲 — ادخل غرفتي مباشرة من هالرابط:\n"
-      : "جرّب ليلة الألعاب 🎲 — تسع ألعاب عربية بجهازك، بدون تحميل:\n";
+      ? "العب معي في ملك الألعاب 🎲 — ادخل غرفتي مباشرة من هالرابط:\n"
+      : "جرّب ملك الألعاب 🎲 — إحدى عشرة لعبة عربية بجهازك، بدون تحميل:\n";
     var u = "https://wa.me/?text=" + encodeURIComponent(msg + shareUrl());
     try { window.open(u, "_blank", "noopener"); } catch (e) { location.href = u; }
   }
@@ -3467,7 +4739,7 @@
   function nativeShare() {
     var url = shareUrl();
     if (navigator.share) {
-      navigator.share({ title: "ليلة الألعاب", text: "العب معي في ليلة الألعاب 🎲", url: url }).catch(function () {});
+      navigator.share({ title: "ملك الألعاب", text: "العب معي في ملك الألعاب 🎲", url: url }).catch(function () {});
     } else copyShareLink();
   }
   /* رسم رمز QR داخل الصندوق الأبيض بعد ظهور الورقة */
@@ -3492,6 +4764,7 @@
       '<div class="share-actions">' +
       '<button class="share-btn" onclick="Game.shareWhatsApp()"><span class="si" style="background:#25d366">💬</span><span><span>إرسال عبر واتساب</span><span class="sd">يفتح واتساب مع الرابط جاهزًا</span></span></button>' +
       (navigator.share ? '<button class="share-btn" onclick="Game.nativeShare()"><span class="si" style="background:var(--blue)">📤</span><span><span>مشاركة…</span><span class="sd">رسائل، تيليجرام، بريد، أي تطبيق</span></span></button>' : "") +
+      '<button class="share-btn" onclick="Game.openContacts()"><span class="si" style="background:var(--purple)">👨‍👩‍👧</span><span><span>عائلتي وأصحابي</span><span class="sd">أرسل مباشرة لمن تحفظهم</span></span></button>' +
       '<button class="share-btn" onclick="Game.copyShareLink()"><span class="si" style="background:var(--surface-3)">🔗</span><span><span>' + (S.shareCopied ? "تم نسخ الرابط ✓" : "نسخ الرابط") + '</span><span class="sd">الصقه في أي مكان</span></span></button>' +
       "</div>" +
       '<div class="link-pill" style="margin-top:12px">' + esc(url) + "</div>" +
@@ -3499,8 +4772,8 @@
   }
 
   /* ---------- الإعدادات والتحديثات داخل اللعبة ---------- */
-  var GAME_VERSION = "1.5.0";
-  var GAME_BUILD = "2026-09-07";
+  var GAME_VERSION = "1.8.2";
+  var GAME_BUILD = "2026-09-09";
 
   function openSettings() { tapFeedback(); S.screen = "settings"; render(); }
 
@@ -3638,6 +4911,7 @@
     html += settingsRow(S.muted ? "🔇" : "🔊", "var(--green)", S.muted ? "الصوت مكتوم" : "الصوت مفعّل",
       "أصوات الإجابات والفوز", "Game.toggleMute()");
     html += settingsRow("📲", "var(--accent)", "شارك اللعبة", "واتساب أو رمز QR", "Game.toggleShare()");
+    html += settingsRow("👨‍👩‍👧", "var(--purple)", "عائلتي وأصحابي", "قائمة إرسال سريعة محفوظة على جهازك", "Game.openContacts()");
     if (S.canInstall) {
       html += settingsRow("⬇️", "var(--indigo)", "ثبّت اللعبة كتطبيق", "تفتح بأيقونتها بدون متصفح", "Game.installApp()");
     } else if (S.isIOS && !S.isStandalone) {
@@ -3646,7 +4920,7 @@
     html += settingsRow("ℹ️", "var(--surface-3)", "عن اللعبة", "الألعاب، الغرف، والنقاط", "Game.toggleAbout()");
     html += "</div></div>";
 
-    html += '<div class="footnote">ليلة الألعاب ' + GAME_VERSION + " — تعمل بلا إنترنت بعد أول فتح</div>";
+    html += '<div class="footnote">ملك الألعاب ' + GAME_VERSION + " — تعمل بلا إنترنت بعد أول فتح</div>";
     return html;
   }
 
@@ -3656,8 +4930,8 @@
     html += topbar(false);
 
     html += '<div style="padding:6px 2px 2px">' +
-      '<div class="lg-title">ليلة الألعاب</div>' +
-      '<div class="lg-sub">تسع ألعاب بروح واحدة — اختر والعب فورًا</div></div>';
+      '<div class="crystal-title">ملك الألعاب</div>' +
+      '<div class="crystal-sub">إحدى عشرة لعبة بروح واحدة — اختر والعب فورًا</div></div>';
 
     var pts = topPointsList();
     if (pts.length) {
@@ -3683,8 +4957,10 @@
     });
     html += "</div>";
 
-    html += '<button class="btn btn-ghost btn-block" style="display:flex;align-items:center;justify-content:center;gap:9px" onclick="Game.toggleShare()">' +
-      "📲 <span>شارك اللعبة مع أصحابك</span></button>";
+    html += '<div style="display:flex;gap:9px">' +
+      '<button class="btn btn-ghost" style="flex:1;display:flex;align-items:center;justify-content:center;gap:7px" onclick="Game.toggleShare()">📲 <span>شارك</span></button>' +
+      '<button class="btn btn-ghost" style="flex:1;display:flex;align-items:center;justify-content:center;gap:7px" onclick="Game.openContacts()">👨‍👩‍👧 <span>عائلتي وأصحابي</span></button>' +
+      "</div>";
 
     html += '<div class="footnote">تشتغل من أي متصفح — أندرويد، آيفون، آيباد، لابتوب. بلا تحميل وبلا تسجيل.</div>';
     return html;
@@ -3742,12 +5018,17 @@
     if (BOARD_LOCAL_ONLY.indexOf(t) !== -1) {
       var hint = t === "chess" ? "الشطرنج يحتاج لاعبين اثنين بالضبط."
         : (t === "xo" ? "إكس أو: لاعبان على جهاز واحد، أو لاعب واحد ضد الكمبيوتر 🤖."
-        : "سيكونس تحتاج من لاعبين إلى 4 لاعبين.");
+        : (t === "hgb" ? "حيوان جماد بلاد: لاعبان فأكثر — كل واحد يكتب بدوره ثم تراجعون سوا."
+        : (t === "tarneeb" ? "طرنيب: أضف اسمك أنت فقط — شريكك والخصمان يلعبهم الكمبيوتر."
+        : (t === "basra" ? "باصرة: من لاعبين إلى 4 لاعبين بالتناوب على جهاز واحد."
+        : "سيكونس تحتاج من لاعبين إلى 4 لاعبين."))));
       html += '<div class="footnote">' + hint + "</div>";
     }
 
-    if (t === "trivia" || t === "wyr" || t === "emoji" || t === "math" || t === "racing") {
-      html += '<div class="card"><div class="section-label">' + (t === "racing" ? "طول المضمار" : "عدد الأسئلة") + "</div>" + countButtons() + "</div>";
+    if (t === "trivia" || t === "wyr" || t === "emoji" || t === "math" || t === "racing" || t === "hgb") {
+      html += '<div class="card"><div class="section-label">' +
+        (t === "racing" ? "طول المضمار" : (t === "hgb" ? "وقت الجولة: 60 / 90 / 120 / 150 ثانية" : "عدد الأسئلة")) +
+        "</div>" + countButtons() + "</div>";
     }
 
     if (t === "trivia") {
@@ -3978,6 +5259,7 @@
     var html = "";
     if (S.screen === "home") html = renderHome();
     else if (S.screen === "settings") html = renderSettings();
+    else if (S.screen === "contacts") html = renderContacts();
     else if (S.screen === "setup") html = renderSetup();
     else if (S.screen === "question") html = renderQuestion(false);
     else if (S.screen === "reveal") html = renderQuestion(true);
@@ -4033,6 +5315,7 @@
     xoClick: xoClickCell,
     selectSequenceCard: selectSequenceCard,
     playSequenceCell: playSequenceCell,
+    seqSwapDeadCard: seqSwapDeadCard,
     chessClick: chessClickCell,
     continueRaceHandoff: continueRaceHandoff,
     setXoAiLevel: setXoAiLevel,
@@ -4043,6 +5326,22 @@
     applyUpdate: applyUpdate,
     repairGame: repairGame,
     resetPointsAll: resetPointsAll,
+    playBasraCard: playBasraCard,
+    tarneebBid: tarneebBid,
+    hgbBeginWriting: hgbBeginWriting,
+    hgbSave: hgbSave,
+    hgbSubmit: hgbSubmit,
+    hgbToggleVerdict: hgbToggleVerdict,
+    hgbFinish: hgbFinish,
+    chooseTrump: chooseTrump,
+    playTarneebCard: playTarneebCard,
+    openContacts: openContacts,
+    setContactGroup: setContactGroup,
+    addContact: addContact,
+    removeContact: removeContact,
+    moveContact: moveContact,
+    sendToContact: sendToContact,
+    copyInviteText: copyInviteText,
     toggleShare: toggleShare,
     shareWhatsApp: shareWhatsApp,
     copyShareLink: copyShareLink,
@@ -4067,6 +5366,7 @@
     deferredInstallPrompt = null;
     render();
   });
+  S.contacts = loadContacts();
   setupPWA();
 
   document.addEventListener("keydown", function (e) {
@@ -4102,7 +5402,7 @@
     var mcqResumable = saved && saved.players && saved.players.length && saved.pool && saved.pool.length &&
       (saved.screen === "question" || saved.screen === "reveal" || saved.screen === "roundbreak");
     var boardResumable = saved && saved.players && saved.players.length && saved.screen === "board" &&
-      ["snakes", "sequence", "chess", "xo"].indexOf(saved.gameType) !== -1 && saved[saved.gameType];
+      ["snakes", "sequence", "chess", "xo", "basra"].indexOf(saved.gameType) !== -1 && saved[saved.gameType];
     var resumable = mcqResumable || boardResumable;
 
     if (!resumable) {
@@ -4138,6 +5438,8 @@
       S.xo = saved.xo || null;
       if (S.snakes) { S.snakes.rolling = false; S.snakes.anim = null; }
       if (S.xo) S.xo.busy = false;
+      S.basra = saved.basra || null;
+      if (S.basra) S.basra.busy = false;
       S.screen = "board";
       render();
       return;
