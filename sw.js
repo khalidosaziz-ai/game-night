@@ -1,7 +1,7 @@
 /* ملك الألعاب — عامل الخدمة
    الشبكة أولًا للصفحة نفسها (حتى يصل أي تحديث فورًا للاعبين)،
    والذاكرة المؤقتة أولًا للأيقونات والملفات الثابتة، مع عمل كامل بلا إنترنت. */
-const CACHE_NAME = "malik-alalaab-v1.8.2";
+const CACHE_NAME = "malik-alalaab-v1.9.0";
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", function (event) {

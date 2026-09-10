@@ -16,7 +16,9 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" media="print" onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap"></noscript>
 <style>
 
   /* ============================================================
@@ -1154,6 +1156,7 @@
 
   /* ---------- state ---------- */
   var S = {
+    pendingName: "",
     screen: "home",
     showShare: false,
     updateChecking: false, updateFound: false, updateMsg: "", settingsMsg: "", confirmReset: false,
@@ -1303,14 +1306,37 @@
   }
 
   /* ---------- game logic ---------- */
-  function addPlayerFromInput() {
+  /* نحفظ ما يكتبه المستخدم حتى لا يضيع مع كل إعادة رسم للشاشة */
+  function setPendingName(v) { S.pendingName = v; }
+  function commitPendingName() {
     var input = document.getElementById("playerNameInput");
-    var name = (input.value || "").trim();
-    if (!name) return;
-    if (S.players.length >= 8) return;
+    var raw = (input && input.value) ? input.value : (S.pendingName || "");
+    var name = raw.trim();
+    if (!name) return false;
+    /* في وضع «لوحدي»: غيّر اسم اللاعب التلقائي بدل إضافة لاعب ثانٍ */
+    if (S.playMode === "solo") {
+      var mine = S.players.filter(function (p) { return !p.bot && p.autoName; })[0];
+      if (mine) {
+        mine.name = name.slice(0, 18);
+        mine.autoName = false;
+        S.pendingName = "";
+        if (input) input.value = "";
+        return true;
+      }
+    }
+    if (S.players.length >= 8) return false;
     var color = PLAYER_COLORS[S.players.length % PLAYER_COLORS.length];
     S.players.push({ id: uid(), name: name.slice(0, 18), color: color });
-    input.value = "";
+    S.pendingName = "";
+    if (input) input.value = "";
+    return true;
+  }
+  function addPlayerFromInput() {
+    var input = document.getElementById("playerNameInput");
+    var raw = (input && input.value) ? input.value : (S.pendingName || "");
+    if (!raw.trim()) { flashWarn("اكتب الاسم أولاً ثم اضغط أضف"); return; }
+    if (S.players.length >= 8) { flashWarn("الحد الأقصى 8 " + unitWord() + "ين"); return; }
+    commitPendingName();
     render();
     var newInput = document.getElementById("playerNameInput");
     if (newInput) newInput.focus();
@@ -1453,7 +1479,10 @@
   }
 
   function startGame() {
-    if (S.players.length === 0) { flashWarn("أضف " + unitWord() + "ًا واحدًا على الأقل"); return; }
+    /* لو المستخدم كتب اسمًا ولم يضغط "أضف" — نضيفه له بدل أن نمنعه من الدخول */
+    if (commitPendingName()) render();
+    if (S.playMode === "solo") ensureSoloPlayers();
+    if (S.players.length === 0) { flashWarn("اكتب اسمًا واضغط أضف — تحتاج " + unitWord() + "ًا واحدًا على الأقل"); return; }
     if (S.gameType === "chess" && S.players.length !== 2) { flashWarn("الشطرنج يحتاج لاعبين اثنين بالضبط"); return; }
     if (S.gameType === "xo" && S.players.length > 2) { flashWarn("إكس أو للاعبين اثنين — أو لاعب واحد ضد الكمبيوتر"); return; }
     if (S.gameType === "sequence" && (S.players.length < 2 || S.players.length > 4)) { flashWarn("سيكونس يحتاج من لاعبين إلى 4 لاعبين"); return; }
@@ -3134,7 +3163,7 @@
   function inviteText() {
     return (S.gameCode
       ? "العب معي في ملك الألعاب 🎲 — ادخل غرفتي من هنا:\n"
-      : "جرّب ملك الألعاب 🎲 — إحدى عشرة لعبة عربية من جوالك، بلا تحميل:\n") + shareUrl();
+      : "جرّب ملك الألعاب 🎲 — اثنتا عشرة لعبة عربية من جوالك، بلا تحميل:\n") + shareUrl();
   }
   function sendToContact(id) {
     var c = loadContacts().filter(function (x) { return x.id === id; })[0];
@@ -3662,6 +3691,8 @@
     var st = S.hgb;
     var me = hgbCurrentPlayer();
     if (!me) return;
+    /* الكمبيوتر كتب إجاباته في الحالة مباشرة — لا تقرأ الحقول الفارغة فوقها */
+    if (st.skipRead) { st.skipRead = false; return; }
     HGB_CATS.forEach(function (c) {
       var el = document.getElementById("hgb_" + c.k);
       if (el) st.answers[me.id][c.k] = (el.value || "").trim();
@@ -3837,12 +3868,324 @@
     return "";
   }
 
+
+  /* ================= وضع «العب لوحدي» — الكمبيوتر يلعب ضدك ================= */
+  var BOT_NAMES = ["الكمبيوتر 🤖", "روبوت ٢ 🤖", "روبوت ٣ 🤖"];
+  function isBotPlayer(p) { return !!(p && p.bot); }
+  function soloBotsNeeded(t) {
+    if (t === "chess" || t === "sequence" || t === "basra" || t === "snakes" || t === "hgb") return 1;
+    return 0;
+  }
+  function ensureSoloPlayers() {
+    if (S.playMode !== "solo") return;
+    var humans = S.players.filter(function (p) { return !p.bot; });
+    if (humans.length > 1) {
+      /* لو المستخدم كتب اسمه، فضّله على الاسم التلقائي "أنا" */
+      var real = humans.filter(function (p) { return !p.autoName; });
+      humans = [real.length ? real[real.length - 1] : humans[0]];
+    }
+    if (!humans.length) humans = [{ id: uid(), name: "أنا", color: PLAYER_COLORS[0], autoName: true }];
+    var need = soloBotsNeeded(S.gameType);
+    var bots = [];
+    for (var i = 0; i < need; i++) {
+      bots.push({
+        id: "__bot" + (i + 1),
+        name: BOT_NAMES[i] || ("روبوت " + (i + 1) + " 🤖"),
+        color: PLAYER_COLORS[(i + 1) % PLAYER_COLORS.length],
+        bot: true
+      });
+    }
+    S.players = humans.concat(bots);
+  }
+
+  /* --- سلم وثعبان --- */
+  function snakesBotTick() {
+    var st = S.snakes;
+    if (!st || st.rolling || st.anim || st.botTimer) return;
+    if (!isBotPlayer(snakesCurrentPlayer())) return;
+    st.botTimer = setTimeout(function () {
+      st.botTimer = null;
+      if (!S.snakes || S.snakes !== st || S.screen !== "board") return;
+      if (!isBotPlayer(snakesCurrentPlayer())) return;
+      rollSnakesDice();
+    }, 850);
+  }
+
+  /* --- باصرة --- */
+  function basraCardWorth(c) {
+    if (c.r === "A" || c.r === "J") return 3;
+    if (c.r === "2" && c.s === "♣") return 4;
+    if (c.r === "10" && c.s === "♦") return 5;
+    if (c.r === "10") return 2;
+    return 1;
+  }
+  function basraBotChoose(st, hand) {
+    var bestIdx = 0, best = -1e9;
+    for (var i = 0; i < hand.length; i++) {
+      var card = hand[i], cap = basraFindCapture(card, st.table), sc;
+      if (cap) {
+        var taken = cap.idx.length;
+        sc = 120 + taken * 12;
+        for (var k = 0; k < cap.idx.length; k++) sc += basraCardWorth(st.table[cap.idx[k]]) * 4;
+        var isBasra = st.table.length === taken && (cap.kind !== "jack" || taken === 1);
+        if (isBasra) sc += 260;
+        if (cap.kind === "jack" && taken <= 1) sc -= 90; /* لا تهدر الولد على ورقة واحدة */
+      } else {
+        /* بلا أكل: نزّل أقل ورقة قيمة، وتجنّب ترك ورقة تُؤكل بسهولة */
+        sc = -basraCardWorth(card) * 10;
+        if (card.r === "J") sc -= 60;
+      }
+      if (sc > best) { best = sc; bestIdx = i; }
+    }
+    return bestIdx;
+  }
+  function basraBotTick() {
+    var st = S.basra;
+    if (!st || st.busy || st.botTimer) return;
+    var cur = basraCurrentPlayer();
+    if (!isBotPlayer(cur)) return;
+    var hand = st.hands[cur.id] || [];
+    if (!hand.length) return;
+    st.botTimer = setTimeout(function () {
+      st.botTimer = null;
+      if (!S.basra || S.basra !== st || S.screen !== "board" || st.busy) return;
+      var c = basraCurrentPlayer();
+      if (!isBotPlayer(c)) return;
+      var h = st.hands[c.id] || [];
+      if (!h.length) return;
+      playBasraCard(basraBotChoose(st, h));
+    }, 900);
+  }
+
+  /* --- سيكونس --- */
+  function seqRunScore(chips, i, pid) {
+    /* كم أطول خط يمر بهذه الخانة لو وضعنا فيها قطعة */
+    var dirs = [[0, 1], [1, 0], [1, 1], [1, -1]];
+    var r0 = Math.floor(i / 10), c0 = i % 10, best = 1;
+    for (var d = 0; d < dirs.length; d++) {
+      var run = 1;
+      for (var sgn = -1; sgn <= 1; sgn += 2) {
+        for (var k = 1; k < 5; k++) {
+          var rr = r0 + dirs[d][0] * k * sgn, cc = c0 + dirs[d][1] * k * sgn;
+          if (rr < 0 || rr > 9 || cc < 0 || cc > 9) break;
+          var ci = rr * 10 + cc;
+          if (seqIsCorner(ci) || chips[ci] === pid) run += 1; else break;
+        }
+      }
+      if (run > best) best = run;
+    }
+    return best;
+  }
+  function seqBotMove(st, pid) {
+    var hand = st.hands[pid] || [];
+    var best = null, bestScore = -1e9;
+    for (var i = 0; i < hand.length; i++) {
+      var card = hand[i];
+      if (SEQ_ONE_EYED_JACKS.indexOf(card) !== -1) {
+        for (var j = 0; j < 100; j++) {
+          if (!st.chips[j] || st.chips[j] === pid || st.lockedCells[j]) continue;
+          var sc0 = 40 + seqRunScore(st.chips, j, st.chips[j]) * 12; /* أزل من الخصم الأخطر */
+          if (sc0 > bestScore) { bestScore = sc0; best = { card: card, cell: j }; }
+        }
+        continue;
+      }
+      var cells = [];
+      if (SEQ_TWO_EYED_JACKS.indexOf(card) !== -1) {
+        for (var m = 0; m < 100; m++) if (!seqIsCorner(m) && !st.chips[m]) cells.push(m);
+      } else {
+        for (var n = 0; n < 100; n++) if (st.board[n] === card && !st.chips[n]) cells.push(n);
+      }
+      for (var q = 0; q < cells.length; q++) {
+        var cell = cells[q];
+        var mine = seqRunScore(st.chips, cell, pid);
+        var sc = mine * 25;
+        /* اقطع خط الخصم إن كان قريبًا من الفوز */
+        for (var pi = 0; pi < S.players.length; pi++) {
+          var op = S.players[pi].id;
+          if (op === pid) continue;
+          var th = seqRunScore(st.chips, cell, op);
+          if (th >= 4) sc += th * 18;
+        }
+        if (SEQ_TWO_EYED_JACKS.indexOf(card) !== -1) sc -= 30; /* وفّر الشبّة الحرة */
+        if (sc > bestScore) { bestScore = sc; best = { card: card, cell: cell }; }
+      }
+    }
+    return best;
+  }
+  function seqBotTick() {
+    var st = S.sequence;
+    if (!st || st.botTimer) return;
+    var cur = sequenceCurrentPlayer();
+    if (!isBotPlayer(cur)) return;
+    st.botTimer = setTimeout(function () {
+      st.botTimer = null;
+      if (!S.sequence || S.sequence !== st || S.screen !== "board") return;
+      var c = sequenceCurrentPlayer();
+      if (!isBotPlayer(c)) return;
+      var mv = seqBotMove(st, c.id);
+      if (!mv) { seqEnsurePlayable(); return; }
+      st.selectedCard = mv.card;
+      playSequenceCell(mv.cell);
+    }, 800);
+  }
+
+  /* --- شطرنج: بحث بعمق 2 مع تقليم ألفا-بيتا --- */
+  var CHESS_VAL = { p: 100, n: 320, b: 330, r: 500, q: 900, k: 20000 };
+  var CHESS_PAWN_ADV = [0, 0, 4, 8, 16, 30, 60, 0];
+  function chessEval(board, me) {
+    var s = 0;
+    for (var r = 0; r < 8; r++) {
+      for (var c = 0; c < 8; c++) {
+        var p = board[r][c];
+        if (!p) continue;
+        var v = CHESS_VAL[p.t] || 0;
+        if (p.t === "p") v += CHESS_PAWN_ADV[p.c === "w" ? r : 7 - r];
+        /* مكافأة بسيطة للسيطرة على المركز */
+        if ((r === 3 || r === 4) && (c === 3 || c === 4)) v += 12;
+        s += (p.c === me ? v : -v);
+      }
+    }
+    return s;
+  }
+  function chessStateFrom(board, base) {
+    return { board: board, castling: base.castling, epTarget: null, turn: base.turn };
+  }
+  function chessGenMoves(state, color) {
+    var out = [];
+    for (var r = 0; r < 8; r++) {
+      for (var c = 0; c < 8; c++) {
+        var p = state.board[r][c];
+        if (!p || p.c !== color) continue;
+        var ms = chessLegalMoves(chessStateFrom(state.board, { castling: state.castling, turn: color }), r, c);
+        for (var i = 0; i < ms.length; i++) out.push({ from: { r: r, c: c }, to: ms[i] });
+      }
+    }
+    return out;
+  }
+  function chessSearch(state, color, me, depth, alpha, beta) {
+    if (depth === 0) return chessEval(state.board, me);
+    var moves = chessGenMoves(state, color);
+    if (!moves.length) {
+      /* كش مات أو جمود */
+      return chessInCheck(state.board, color) ? (color === me ? -50000 : 50000) : 0;
+    }
+    var maximizing = (color === me);
+    var best = maximizing ? -1e9 : 1e9;
+    for (var i = 0; i < moves.length; i++) {
+      var nb = chessSimulate(chessStateFrom(state.board, { castling: state.castling, turn: color }), moves[i].from, moves[i].to);
+      var val = chessSearch({ board: nb, castling: state.castling }, color === "w" ? "b" : "w", me, depth - 1, alpha, beta);
+      if (maximizing) { if (val > best) best = val; if (best > alpha) alpha = best; }
+      else { if (val < best) best = val; if (best < beta) beta = best; }
+      if (beta <= alpha) break;
+    }
+    return best;
+  }
+  function chessBotMove(st, color) {
+    var moves = chessGenMoves(st, color);
+    if (!moves.length) return null;
+    var best = null, bestVal = -1e9;
+    /* ترتيب مبدئي: الأكلات أولًا ليعمل التقليم بكفاءة */
+    moves.sort(function (a, b) {
+      var ca = st.board[a.to.r][a.to.c] ? CHESS_VAL[st.board[a.to.r][a.to.c].t] : 0;
+      var cb = st.board[b.to.r][b.to.c] ? CHESS_VAL[st.board[b.to.r][b.to.c].t] : 0;
+      return cb - ca;
+    });
+    for (var i = 0; i < moves.length; i++) {
+      var nb = chessSimulate(st, moves[i].from, moves[i].to);
+      var val = chessSearch({ board: nb, castling: st.castling }, color === "w" ? "b" : "w", color, 2, -1e9, 1e9);
+      val += Math.random() * 6; /* كسر التعادل حتى لا تتكرر نفس المباراة */
+      if (val > bestVal) { bestVal = val; best = moves[i]; }
+    }
+    return best;
+  }
+  function chessBotTick() {
+    var st = S.chess;
+    if (!st || st.botTimer || st.status === "checkmate" || st.status === "stalemate") return;
+    var turnPlayer = chessPlayerOfColor(st.turn);
+    if (!isBotPlayer(turnPlayer)) return;
+    st.botTimer = setTimeout(function () {
+      st.botTimer = null;
+      if (!S.chess || S.chess !== st || S.screen !== "board") return;
+      if (st.status === "checkmate" || st.status === "stalemate") return;
+      if (!isBotPlayer(chessPlayerOfColor(st.turn))) return;
+      var mv = chessBotMove(st, st.turn);
+      if (!mv) return;
+      st.selected = null; st.legalTargets = [];
+      makeChessMove(mv.from, mv.to);
+    }, 620);
+  }
+
+  /* --- حيوان جماد بلاد --- */
+  var HGB_BOT_BANK = {
+    name: { "ا": "أحمد", "ب": "بشار", "ت": "تامر", "ج": "جميل", "ح": "حسن", "خ": "خالد", "د": "داود", "ر": "رامي", "ز": "زياد", "س": "سامي", "ش": "شادي", "ص": "صالح", "ط": "طارق", "ع": "عمر", "ف": "فادي", "ق": "قاسم", "ك": "كريم", "ل": "ليلى", "م": "محمد", "ن": "نادر", "ه": "هاني", "و": "وليد", "ي": "يوسف" },
+    animal: { "ا": "أرنب", "ب": "بقرة", "ت": "تمساح", "ج": "جمل", "ح": "حصان", "خ": "خروف", "د": "دب", "ر": "راكون", "ز": "زرافة", "س": "سلحفاة", "ش": "شمبانزي", "ص": "صقر", "ط": "طاووس", "ع": "عصفور", "ف": "فيل", "ق": "قرد", "ك": "كلب", "ل": "ليث", "م": "ماعز", "ن": "نمر", "ه": "هدهد", "و": "وعل", "ي": "يمامة" },
+    object: { "ا": "إبريق", "ب": "باب", "ت": "تلفاز", "ج": "جدار", "ح": "حقيبة", "خ": "خزانة", "د": "دفتر", "ر": "رف", "ز": "زجاج", "س": "سرير", "ش": "شباك", "ص": "صحن", "ط": "طاولة", "ع": "علبة", "ف": "فنجان", "ق": "قلم", "ك": "كرسي", "ل": "لوح", "م": "مفتاح", "ن": "نافذة", "ه": "هاتف", "و": "وسادة", "ي": "يخت" },
+    plant: { "ا": "أقحوان", "ب": "بابونج", "ت": "توت", "ج": "جوز", "ح": "حبق", "خ": "خيار", "د": "دوّار الشمس", "ر": "رمان", "ز": "زعتر", "س": "سنديان", "ش": "شعير", "ص": "صبار", "ط": "طماطم", "ع": "عنب", "ف": "فل", "ق": "قمح", "ك": "كرز", "ل": "ليمون", "م": "مشمش", "ن": "نعناع", "ه": "هيل", "و": "ورد", "ي": "ياسمين" },
+    country: { "ا": "الأردن", "ب": "البحرين", "ت": "تونس", "ج": "جيبوتي", "ح": "هولندا", "خ": "خوارزم", "د": "الدنمارك", "ر": "روسيا", "ز": "زامبيا", "س": "سوريا", "ش": "الشيلي", "ص": "الصومال", "ط": "طاجيكستان", "ع": "عُمان", "ف": "فلسطين", "ق": "قطر", "ك": "كندا", "ل": "لبنان", "م": "مصر", "ن": "النرويج", "ه": "الهند", "و": "واشنطن", "ي": "اليمن" },
+    food: { "ا": "أرز", "ب": "برغل", "ت": "تبولة", "ج": "جبنة", "ح": "حمص", "خ": "خبز", "د": "دجاج", "ر": "رز بحليب", "ز": "زيتون", "س": "سمك", "ش": "شاورما", "ص": "صيادية", "ط": "طاجن", "ع": "عدس", "ف": "فتوش", "ق": "قطايف", "ك": "كبة", "ل": "لبنة", "م": "ملوخية", "ن": "نمورة", "ه": "هريسة", "و": "ورق عنب", "ي": "يخنة" }
+  };
+  function hgbBotFill(st, pid) {
+    var ans = st.answers[pid] || (st.answers[pid] = {});
+    HGB_CATS.forEach(function (cat) {
+      var bank = HGB_BOT_BANK[cat.k] || {};
+      var w = bank[st.letter] || "";
+      /* الكمبيوتر ليس مثاليًا: أحيانًا يترك خانة فارغة حتى تبقى اللعبة ممتعة */
+      if (w && Math.random() < 0.82) ans[cat.k] = w;
+    });
+  }
+  function hgbBotTick() {
+    var st = S.hgb;
+    if (!st || st.botTimer) return;
+    var cur = hgbCurrentPlayer();
+    if (!isBotPlayer(cur)) return;
+    if (st.phase !== "letter" && st.phase !== "write") return;
+    st.botTimer = setTimeout(function () {
+      st.botTimer = null;
+      if (!S.hgb || S.hgb !== st || S.screen !== "board") return;
+      var c = hgbCurrentPlayer();
+      if (!isBotPlayer(c)) return;
+      if (st.phase === "letter") { hgbBeginWriting(); return; }
+      if (st.phase === "write") {
+        hgbBotFill(st, c.id);
+        clearTimeout(st.timerHandle);
+        st.skipRead = true;
+        hgbSubmit(false);
+      }
+    }, st.phase === "letter" ? 700 : 1400);
+  }
+
+  /* --- المحرّك المركزي: يُستدعى بعد كل رسم --- */
+  function soloTick() {
+    if (S.screen !== "board") return;
+    var t = S.gameType;
+    try {
+      if (t === "snakes") snakesBotTick();
+      else if (t === "basra") basraBotTick();
+      else if (t === "sequence") seqBotTick();
+      else if (t === "chess") chessBotTick();
+      else if (t === "hgb") hgbBotTick();
+    } catch (e) { /* لا نُسقط اللعبة أبدًا بسبب البوت */ }
+  }
+
   /* ---------- parallel / independent play ---------- */
+  var LOCAL_ONLY_NAMES = { chess: "الشطرنج", xo: "إكس أو", snakes: "سلم وثعبان", sequence: "سيكونس", basra: "باصرة", tarneeb: "طرنيب", hgb: "حيوان جماد بلاد" };
   function setPlayMode(m) {
+    /* هذه الألعاب تحتاج لوحًا مشتركًا، فتُلعب بالتناوب على جهاز واحد.
+       سابقًا كنا نبدّلها إلى تريفيا بصمت — وهذا كان يربك اللاعب. */
+    if (m === "parallel" && BOARD_LOCAL_ONLY.indexOf(S.gameType) !== -1) {
+      flashWarn((LOCAL_ONLY_NAMES[S.gameType] || "هذه اللعبة") + " تُلعب بالتناوب على جهاز واحد — اختر لعبة ثانية إذا بدكم كل واحد بجهازه");
+      S.playMode = "local";
+      render();
+      return;
+    }
     S.playMode = m;
+    if (m === "solo") {
+      S.mode = "players";
+      ensureSoloPlayers();
+      flashWarn(soloBotsNeeded(S.gameType) ? "وضع اللعب الفردي — الكمبيوتر بيلعب ضدك 🤖" : "وضع اللعب الفردي — العب وحطّم رقمك القياسي 🏆");
+    }
     if (m === "parallel") {
       S.mode = "players";
-      if (BOARD_LOCAL_ONLY.indexOf(S.gameType) !== -1) S.gameType = "trivia";
       S.parallelPhase = S.parallelPhase || (S.prefillCode ? "join" : "create");
     }
     render();
@@ -3853,7 +4196,11 @@
   }
   function setGameType(t) {
     S.gameType = t;
-    if (S.playMode === "parallel" && BOARD_LOCAL_ONLY.indexOf(t) !== -1) S.playMode = "local";
+    if (S.playMode === "solo") ensureSoloPlayers();
+    if (S.playMode === "parallel" && BOARD_LOCAL_ONLY.indexOf(t) !== -1) {
+      S.playMode = "local";
+      flashWarn((LOCAL_ONLY_NAMES[t] || "هذه اللعبة") + " على جهاز واحد بالتناوب — رجّعناكم لوضع الجهاز الواحد");
+    }
     render();
   }
   function inviteUrl(code) {
@@ -4281,7 +4628,7 @@
     return '<div class="modal-backdrop" onclick="if(event.target===this)Game.toggleAbout()">' +
       '<div class="modal-card">' +
       '<div class="modal-head"><span class="modal-title">عن اللعبة</span><button class="icon-btn" onclick="Game.toggleAbout()" aria-label="إغلاق">' + svgIcon("x") + "</button></div>" +
-      '<p class="modal-text">ملك الألعاب يجمع إحدى عشرة لعبة بمكان واحد — تريفيا، لو خيّروك، خمّن من الرموز، تحدي الأرقام، سباق السيارات، سلم وثعبان، سيكونس، شطرنج، إكس أو، وباصرة. العبوا بالتناوب على جهاز واحد، أو أنشئ غرفة وشارك رابطها ليدخل أصحابك ويلعبوا نفس الجولة من جوالاتهم (تريفيا ولو خيّروك وخمّن من الرموز وتحدي الأرقام وسباق السيارات). كل فوز يزيد نقاطك الدائمة — تتراكم مع كل جلسة. بلا تحميل وبلا تسجيل.</p>' +
+      '<p class="modal-text">ملك الألعاب يجمع اثنتا عشرة لعبة بمكان واحد — تريفيا، لو خيّروك، خمّن الرموز، تحدي الأرقام، سباق السيارات، حيوان جماد بلاد، سلم وثعبان، باصرة، طرنيب، سيكونس، شطرنج، وإكس أو. العبوا بالتناوب على جهاز واحد، أو أنشئ غرفة وشارك رابطها ليدخل أصحابك ويلعبوا نفس الجولة من جوالاتهم (تريفيا ولو خيّروك وخمّن من الرموز وتحدي الأرقام وسباق السيارات). كل فوز يزيد نقاطك الدائمة — تتراكم مع كل جلسة. بلا تحميل وبلا تسجيل.</p>' +
       '<p class="modal-text"><strong>فكرة الربح:</strong> حزم أسئلة إضافية (رياضة احترافية، أفلام حديثة، تاريخ عربي) بسعر رمزي، ألعاب حفلات إضافية كمحتوى مدفوع، نسخة للمدارس والفعاليات بإدارة مجموعات، أو اشتراك شهري لمن يحب ليالي الألعاب الأسبوعية.</p>' +
       (S.isIOS && !S.isStandalone
         ? '<p class="modal-text"><strong>ثبّتها على الشاشة الرئيسية (آيفون/آيباد):</strong> اضغط زر المشاركة أسفل متصفح Safari (المربع مع السهم للأعلى)، ثم اختر "إضافة إلى الشاشة الرئيسية". بعدها تفتح اللعبة بأيقونتها الخاصة بدون شريط المتصفح، متل أي تطبيق.</p>'
@@ -4294,13 +4641,18 @@
     var html = '<div class="card">';
     html += '<div class="section-label">طريقة اللعب</div>';
     html += '<div class="mode-toggle">';
+    html += '<button class="choice-chip" data-on="' + (S.playMode === "solo" ? 1 : 0) + '" onclick="Game.setPlayMode(\'solo\')">🤖 لوحدي</button>';
     html += '<button class="choice-chip" data-on="' + (S.playMode === "local" ? 1 : 0) + '" onclick="Game.setPlayMode(\'local\')">بالتناوب (جهاز واحد)</button>';
     html += '<button class="choice-chip" data-on="' + (S.playMode === "parallel" ? 1 : 0) + '" onclick="Game.setPlayMode(\'parallel\')">كل واحد من جواله</button>';
     html += '</div>';
     html += '<div class="footnote" style="text-align:right;margin-top:2px">' +
-      (S.playMode === "parallel"
-        ? "كل فرد يفتح اللعبة على جواله ويدخل نفس الرمز، فيحصل الجميع على نفس الأسئلة بنفس الترتيب — كل واحد يلعب بمفرده ثم تقارنون النقاط."
-        : "الكل يتناوب على جهاز واحد — بلا تحضير وبلا شرح.") +
+      (S.playMode === "solo"
+        ? (soloBotsNeeded(S.gameType)
+            ? "أنت والكمبيوتر 🤖 — أضف اسمك فقط واضغط ابدأ، والكمبيوتر بيلعب ضدك."
+            : "أنت لوحدك — العب على راحتك وحاول تحطّم رقمك القياسي 🏆.")
+        : (S.playMode === "parallel"
+          ? "كل فرد يفتح اللعبة على جواله ويدخل نفس الرمز، فيحصل الجميع على نفس الأسئلة بنفس الترتيب — كل واحد يلعب بمفرده ثم تقارنون النقاط."
+          : "الكل يتناوب على جهاز واحد — بلا تحضير وبلا شرح.")) +
       "</div>";
     html += "</div>";
     return html;
@@ -4715,7 +5067,7 @@
   function shareWhatsApp() {
     var msg = S.gameCode
       ? "العب معي في ملك الألعاب 🎲 — ادخل غرفتي مباشرة من هالرابط:\n"
-      : "جرّب ملك الألعاب 🎲 — إحدى عشرة لعبة عربية بجهازك، بدون تحميل:\n";
+      : "جرّب ملك الألعاب 🎲 — اثنتا عشرة لعبة عربية بجهازك، بدون تحميل:\n";
     var u = "https://wa.me/?text=" + encodeURIComponent(msg + shareUrl());
     try { window.open(u, "_blank", "noopener"); } catch (e) { location.href = u; }
   }
@@ -4772,8 +5124,8 @@
   }
 
   /* ---------- الإعدادات والتحديثات داخل اللعبة ---------- */
-  var GAME_VERSION = "1.8.2";
-  var GAME_BUILD = "2026-09-09";
+  var GAME_VERSION = "1.9.0";
+  var GAME_BUILD = "2026-09-10";
 
   function openSettings() { tapFeedback(); S.screen = "settings"; render(); }
 
@@ -4931,7 +5283,7 @@
 
     html += '<div style="padding:6px 2px 2px">' +
       '<div class="crystal-title">ملك الألعاب</div>' +
-      '<div class="crystal-sub">إحدى عشرة لعبة بروح واحدة — اختر والعب فورًا</div></div>';
+      '<div class="crystal-sub">اثنتا عشرة لعبة بروح واحدة — اختر والعب فورًا</div></div>';
 
     var pts = topPointsList();
     if (pts.length) {
@@ -4997,7 +5349,7 @@
     html += '<button class="choice-chip" data-on="' + (S.mode === "teams" ? 1 : 0) + '" onclick="Game.toggleMode(\'teams\')">فرق</button>';
     html += "</div>";
     html += '<div class="section-label">' + unitWordPlural() + " (" + S.players.length + ")</div>";
-    html += '<div class="field"><input id="playerNameInput" class="text-input" placeholder="اسم ال' + unitWord() + '..." maxlength="18" onkeydown="if(event.key===\'Enter\')Game.addPlayer()"><button class="btn btn-primary" onclick="Game.addPlayer()">أضف</button></div>';
+    html += '<div class="field"><input id="playerNameInput" class="text-input" placeholder="اسم ال' + unitWord() + '..." maxlength="18" value="' + esc(S.pendingName || "") + '" enterkeyhint="done" oninput="Game.setPendingName(this.value)" onkeydown="if(event.key===\'Enter\'){event.preventDefault();Game.addPlayer();}"><button class="btn btn-primary" onclick="Game.addPlayer()">أضف</button></div>';
     if (S.players.length) {
       html += '<div class="player-list">' + S.players.map(function (p, i) {
         return '<div class="player-chip" style="animation-delay:' + (i * 40) + 'ms"><div class="avatar" style="background:' + p.color + ';cursor:pointer" onclick="Game.cyclePlayerColor(\'' + p.id + '\')" title="غيّر اللون">' + esc(initials(p.name)) + '</div><span class="name">' + esc(p.name) + '</span><button class="remove-btn" onclick="Game.removePlayer(\'' + p.id + '\')" aria-label="إزالة">' + svgIcon("x") + "</button></div>";
@@ -5276,11 +5628,15 @@
     app.classList.remove("fade-in");
     void app.offsetWidth;
     app.classList.add("fade-in");
+    soloTick();
   }
 
   /* ---------- public API ---------- */
   window.Game = {
     addPlayer: addPlayerFromInput,
+    setPendingName: setPendingName,
+    soloTick: soloTick,
+    ensureSolo: ensureSoloPlayers,
     removePlayer: removePlayer,
     toggleCat: toggleCat,
     toggleMode: toggleMode,
